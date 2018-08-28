@@ -12,12 +12,18 @@ var urlencodedParser = bodyParser.urlencoded({
 });
 var JsonURL = "temp"
 
-//get the url from Personal Image Identifier.html
+//get the url from Azure Image Identifier.html
 app.use(express.static('public'));
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 //if the method is get
-app.get('/Personal Image Identifier.html', function(req, res) {
-  res.sendFile(_dirname + "/" + "Personal Image Identifier.html");
+app.get('/Azure Image Identifier.html', function(req, res) {
+  res.sendFile(_dirname + "/" + "Azure Image Identifier.html");
 })
 
 //if the method is post
@@ -31,11 +37,11 @@ app.post('/geturl', urlencodedParser, function(req, res) {
   bodyHTML.data = response;
   bodyHTML.emit('update');
 
-  //using another eventemitter to get the response from azure to display back to Personal Image Identifier.html
+  //using another eventemitter to get the response from azure to display back to Azure Image Identifier.html
   bodyResponse.on('update', function() {
     var string = bodyResponse.data
     res.write(JSON.stringify(string));
-    res.flush();
+    res.flushHeaders();
   })
 })
 
@@ -61,7 +67,7 @@ bodyHTML.on('update', function() {
     //passing the image description from azure back to html using another event emitter
     bodyResponse.data = body;
     bodyResponse.emit('update');
-    //console.log(body)
+    console.log(body)
   });
 
 });
