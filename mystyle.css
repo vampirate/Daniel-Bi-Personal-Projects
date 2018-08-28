@@ -1,7 +1,9 @@
 /* Add a black background color to the top navigation */
 .navigation {
-    margin-left: -10px;
-    background-color: #6A0008;
+    margin-left: -20px;
+    margin-top: -10px;
+    margin-right: -10px;
+    background-color: #dbcece;
     overflow: hidden;
     text-decoration: none;
 }
@@ -9,7 +11,7 @@
 /* Style the links inside the navigation bar */
 .navigation a {
     float: left;
-    color: #C3656C;
+    color: #000000;
     text-align: center;
     padding: 16px 14px;
     text-decoration: none;
@@ -18,14 +20,14 @@
 
 /* Change the color of links on hover */
 .navigation a:hover {
-    background-color: #E19DA2;
-    color: black;
+    background-color: #bcafaf;
+    color: #000000;
 }
 
 /* Add a color to the active/current link */
 .navigation a.active {
-    background-color: #6A0008;
-    color: #E19DA2;
+    background-color: #bcafaf;
+    color: #000000;
 }
 
 
@@ -33,7 +35,7 @@ body {
   margin-left: 20px;
   font-family: 'Roboto', sans-serif;
   text-decoration: none;
-  background-color: #CA767C;
+  background-color: #ffffff;
 }
 
 h1 {

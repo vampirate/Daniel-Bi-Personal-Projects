@@ -22,7 +22,7 @@
     <button type="button" onclick="loadDoc()">Submit</button>
   </form>
 
-  <p>The tags are:</p>
+  <!--<p>The tags are:</p>-->
   <div id="title">
     <p>The tags for the image will be displayed HERE</p>
   </div>
@@ -40,7 +40,7 @@
           var resultParsed = JSON.parse(xhttp.responseText);
           console.log(xhttp.responseText);
           console.log(resultParsed);
-          document.getElementById("title").innerHTML = resultParsed.tags + "<br>";
+          document.getElementById("title").innerHTML = "the tags are: " + resultParsed.tags + "<br>";
           document.getElementById("image").src = input;
           document.getElementById("image").height = 150;
         }
