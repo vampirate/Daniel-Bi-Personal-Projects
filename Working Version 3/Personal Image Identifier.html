@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Personal Image Identifier</title>
+  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="mystyle.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+
+<body id="PII">
+  <div class="navigation">
+    <a href="Home.html">Home</a>
+    <a class="active" href="Personal Image Identifier.html">Personal Image Identifier</a>
+  </div>
+
+  <h1>My personal image identifier</h1>
+  <form>
+    <input name="urlInput" type="text" maxlength="512" id="urlInput" />
+    <button type="button" onclick="loadDoc()">Submit</button>
+  </form>
+
+  <p>The tags are:</p>
+  <div id="title">
+    <p>The tags for the image will be displayed HERE</p>
+  </div>
+  <br>
+  <img id="image" src="" width=""="150" alt="The image will be displayed HERE">
+  </img>
+
+  <script>
+    function loadDoc() {
+      var input = document.getElementById("urlInput").value;
+      console.log(input);
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 3) {
+          var resultParsed = JSON.parse(xhttp.responseText);
+          console.log(xhttp.responseText);
+          console.log(resultParsed);
+          document.getElementById("title").innerHTML = resultParsed.tags + "<br>";
+          document.getElementById("image").src = input;
+          document.getElementById("image").height = 150;
+        }
+      };
+      xhttp.open("POST", "http://127.0.0.1:3000/geturl", true);
+      xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhttp.send("JsonURL=" + input);
+    }
+  </script>
+
+  <div class="footer">
+    <p>Made by Daniel Bi</p>
+    <p>Powered by Microsoft Azure Computer Vision</p>
+  </div>
+
+</body>
+
+</html>
