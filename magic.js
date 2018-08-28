@@ -1,4 +1,4 @@
-//initialize all the modules and variables
+//Initialize all the modules and variables
 var request = require('request');
 var bodyParser = require('body-parser');
 var events = require('events');
@@ -12,23 +12,24 @@ var urlencodedParser = bodyParser.urlencoded({
 });
 var JsonURL = "temp"
 
-//get the url from Azure Image Identifier.html
-app.use(express.static('public'));
+//Get the url from Azure Image Identifier.html
 
+//Allow the use of Cross Origin Resource Sharing
+app.use(express.static('public'));
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
-//if the method is get
+//If the method is get, send a file (not used now)
 app.get('/Azure Image Identifier.html', function(req, res) {
   res.sendFile(_dirname + "/" + "Azure Image Identifier.html");
 })
 
-//if the method is post
+//If the method is post
 app.post('/geturl', urlencodedParser, function(req, res) {
-  //put the response into "response"
+  //Put the response into "response"
   response = {
     "url": req.body.JsonURL
   }
