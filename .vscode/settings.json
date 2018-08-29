@@ -1,2 +1,15 @@
 {
+    "git.confirmSync": false,
+    "editor.cursorWidth": 2,
+    "editor.cursorBlinking": "expand",
+    "css.lint.boxModel": "warning",
+    "css.lint.float": "warning",
+    "html.format.indentInnerHtml": true,
+    "editor.minimap.renderCharacters": false,
+    "files.autoGuessEncoding": true,
+    "breadcrumbs.enabled": true,
+    "editor.fontSize": 14,
+    "editor.formatOnType": true,
+    "editor.formatOnPaste": true,
+    "files.autoSave": "afterDelay"
 }
