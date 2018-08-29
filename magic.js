@@ -16,19 +16,19 @@ var JsonURL = "temp"
 
 //Allow the use of Cross Origin Resource Sharing
 app.use(express.static('public'));
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
 //If the method is get, send a file (not used now)
-app.get('/Azure Image Identifier.html', function(req, res) {
+app.get('/Azure Image Identifier.html', function (req, res) {
   res.sendFile(_dirname + "/" + "Azure Image Identifier.html");
 })
 
 //If the method is post
-app.post('/geturl', urlencodedParser, function(req, res) {
+app.post('/geturl', urlencodedParser, function (req, res) {
   //Put the response into "response"
   response = {
     "url": req.body.JsonURL
@@ -39,19 +39,19 @@ app.post('/geturl', urlencodedParser, function(req, res) {
   bodyHTML.emit('update');
 
   //using another eventemitter to get the response from azure to display back to Azure Image Identifier.html
-  bodyResponse.on('update', function() {
+  bodyResponse.on('update', function () {
     var string = bodyResponse.data
     res.write(JSON.stringify(string));
     res.flushHeaders();
   })
 })
 
-app.listen(3000, function() {
+app.listen(3000, function () {
   console.log('listening')
 });
 
 
-bodyHTML.on('update', function() {
+bodyHTML.on('update', function () {
   //updating the image url
   JsonURL = bodyHTML.data;
   console.log(JsonURL);
@@ -64,7 +64,7 @@ bodyHTML.on('update', function() {
       'Ocp-Apim-Subscription-Key': 'c07929b7faf4475aa2889715230e2ee3'
     },
     body: JsonURL,
-  }, function(error, response, body) {
+  }, function (error, response, body) {
     //passing the image description from azure back to html using another event emitter
     bodyResponse.data = body;
     bodyResponse.emit('update');
