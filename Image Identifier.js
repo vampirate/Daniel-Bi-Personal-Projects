@@ -22,11 +22,6 @@ app.use(function (req, res, next) {
   next();
 });
 
-//If the method is get, send a file (not used now)
-app.get('/Azure Image Identifier.html', function (req, res) {
-  res.sendFile(_dirname + "/" + "Azure Image Identifier.html");
-})
-
 //If the method is post
 app.post('/geturl', urlencodedParser, function (req, res) {
   //Put the response into "response"
@@ -70,5 +65,4 @@ bodyHTML.on('update', function () {
     bodyResponse.emit('update');
     console.log(body)
   });
-
 });
