@@ -18,6 +18,31 @@
             <a href="Image Identifier.html">Image Identifier</a>
             <a class="active" href="test.html">Test Page</a>
         </div>
+
+        <script>
+            function loadDoc() {
+                var input = "images/ProfilePicture.jpg";
+                console.log(input);
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (xhttp.readyState == 3) {
+                        var resultParsed = JSON.parse(xhttp.responseText);
+                        console.log(xhttp.responseText);
+                        console.log(resultParsed);
+                        document.getElementById("ImageIdentifierTags").innerHTML = "The tags are: " + "<br>" +
+                            resultParsed
+                            .tags +
+                            "<br>";
+                        document.getElementById("ImageIdentifierImage").src = input;
+                        console.log(input);
+                        document.getElementById("ImageIdentifierImage").height = 150;
+                    }
+                };
+                xhttp.open("POST", "http://127.0.0.1:3000/getimage", true);
+                xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhttp.send("JsonURL=" + input);
+            }
+        </script>
     </body>
 
 </html>

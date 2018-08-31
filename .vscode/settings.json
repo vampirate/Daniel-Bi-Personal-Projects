@@ -11,5 +11,6 @@
     "editor.fontSize": 14,
     "editor.formatOnType": true,
     "editor.formatOnPaste": true,
-    "files.autoSave": "afterDelay"
+    "files.autoSave": "afterDelay",
+    "python.formatting.provider": "black"
 }
