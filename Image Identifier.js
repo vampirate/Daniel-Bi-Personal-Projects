@@ -23,7 +23,7 @@ app.use(function (req, res, next) {
 });
 
 //If the method is post
-app.post('/geturl', urlencodedParser, function (req, res) {
+app.post('/getImageIdentifierUrl', urlencodedParser, function (req, res) {
   //Put the response into "response"
   response = {
     "url": req.body.JsonURL

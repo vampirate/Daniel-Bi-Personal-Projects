@@ -35,8 +35,7 @@ app.post('/getimageurl', urlencodedParser, function (req, res) {
 
     //using another eventemitter to get the response from azure to display back to Azure Image Identifier.html
     bodyResponse.on('update', function () {
-        res.write(bodyResponse.data);
-        res.flushHeaders();
+        res.send(bodyResponse.data)
     })
 })
 
@@ -58,6 +57,7 @@ bodyHTML.on('update', function () {
         bodyResponse.data = data;
         bodyResponse.emit('update');
         console.log("updated1 is " + bodyResponse.data)
+        process.exit();
     });
     py.stdin.write(data);
     py.stdin.end();
