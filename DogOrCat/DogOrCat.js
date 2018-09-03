@@ -48,15 +48,15 @@ app.listen(3001, function () {
 bodyHTML.on('update', function () {
     //updating the image url
     data = bodyHTML.data;
-    console.log("data is " + data);
+    //console.log("data is " + data);
     var spawn = require('child_process').spawn,
         py = spawn('python', ['-u', 'cnn.py']);
 
     py.stdout.on('data', function (data) {
-        console.log("data out of python is " + data);
+        //console.log("data out of python is " + data);
         bodyResponse.data = data;
         bodyResponse.emit('update');
-        console.log("updated1 is " + bodyResponse.data)
+        //console.log("updated1 is " + bodyResponse.data)
         process.exit();
     });
     py.stdin.write(data);

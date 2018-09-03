@@ -37,7 +37,7 @@
         console.log(input);
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
-          if (xhttp.readyState == 3) {
+          if (xhttp.readyState == 4) {
             var resultParsed = JSON.parse(xhttp.responseText);
             console.log(xhttp.responseText);
             console.log(resultParsed);

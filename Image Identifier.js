@@ -36,8 +36,7 @@ app.post('/getImageIdentifierUrl', urlencodedParser, function (req, res) {
   //using another eventemitter to get the response from azure to display back to Azure Image Identifier.html
   bodyResponse.on('update', function () {
     var string = bodyResponse.data
-    res.write(JSON.stringify(string));
-    res.flushHeaders();
+    res.send(JSON.stringify(string));
   })
 })
 
@@ -64,5 +63,6 @@ bodyHTML.on('update', function () {
     bodyResponse.data = body;
     bodyResponse.emit('update');
     console.log(body)
+    process.exit();
   });
 });
