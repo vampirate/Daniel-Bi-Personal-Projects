@@ -23,25 +23,24 @@ app.use(function (req, res, next) {
 });
 
 //If the method is post
-app.post('/geturl', urlencodedParser, function (req, res) {
+app.post('/getimageurl', urlencodedParser, function (req, res) {
     //Put the response into "response"
     response = {
-        "number": req.body.number
+        "imageurl": req.body.imageurl
     }
     console.log(response);
     //using an eventemitter to pass on the response to jsonurl variable
-    bodyHTML.data = response.number;
+    bodyHTML.data = response.imageurl;
     bodyHTML.emit('update');
 
     //using another eventemitter to get the response from azure to display back to Azure Image Identifier.html
     bodyResponse.on('update', function () {
-        var string = bodyResponse.data
-        res.write(JSON.stringify(string));
-        res.flushHeaders();
+        res.send(bodyResponse.data); //////////
     })
 })
 
-app.listen(3000, function () {
+
+app.listen(3001, function () {
     console.log('listening')
 });
 
@@ -49,19 +48,15 @@ app.listen(3000, function () {
 bodyHTML.on('update', function () {
     //updating the image url
     data = bodyHTML.data;
+    console.log("data is " + data);
     var spawn = require('child_process').spawn,
-        py = spawn('python', ['c.py']),
-
-    dataString = '';
+        py = spawn('python', ['-u', 'cnn.py']);
 
     py.stdout.on('data', function (data) {
-        dataString += data.toString();
-    });
-    py.stdout.on('end', function () {
-        console.log('Sum of numbers=', dataString);
-        bodyResponse.data = dataString;
+        console.log("data out of python is " + data);
+        bodyResponse.data = data;
         bodyResponse.emit('update');
-        console.log("updated is " + bodyResponse.data)
+        console.log("updated1 is " + bodyResponse.data)
     });
     py.stdin.write(data);
     py.stdin.end();

@@ -24,20 +24,20 @@
 
         <script>
             function loadDoc() {
-                var input = 11;
+                var input = "cat.jpg";
                 console.log(input);
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     console.log("hey")
-                    if (xhttp.readyState == 3) {
+                    if (xhttp.readyState == 4) {
                         console.log("hey2")
                         var result = xhttp.responseText;
-                        console.log(xhttp.responseText);
+                        console.log(result);
                     }
                 };
-                xhttp.open("POST", "http://127.0.0.1:3000/geturl", true);
+                xhttp.open("POST", "http://127.0.0.1:3001/getimageurl", true);
                 xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhttp.send("number=" + input);
+                xhttp.send("imageurl=" + input);
             }
         </script>
     </body>

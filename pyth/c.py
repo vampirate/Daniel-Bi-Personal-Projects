@@ -1,24 +1,24 @@
-import sys, json, numpy as np
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-#Read data from stdin
-def read_in():
-    lines = sys.stdin.readlines()
-    #Since our input would only be having one line, parse our JSON data from that
-    return json.loads(lines[0])
+import numpy as np
+from keras.preprocessing import image 
+from skimage.io import imread
+from skimage.transform import resize
+from keras.models import load_model
+classifier = load_model('DogOrCat.h5')
 
-def main():
-    #get our data as an array from read_in()
-    lines = read_in()
+img = imread('ProfilePicture.jpg')
+img = resize(img,(64,64))
+img = np.expand_dims(img,axis=0)
+ 
+if(np.max(img)>1):
+    img = img/255.0
+ 
+prediction = classifier.predict_classes(img)
+ 
+if(prediction):
+    print ("DOG")
+else:
+    print("CAT")
 
-    #create a numpy array
-    np_lines = np.array(lines)
-
-    #use numpys sum method to find sum of all elements in the array
-    lines_sum = np.sum(np_lines)
-
-    #return the sum to the output stream
-    print (lines_sum + 5)
-
-#start process
-if __name__ == '__main__':
-    main()
