@@ -35,7 +35,8 @@ app.post('/getimageurl', urlencodedParser, function (req, res) {
 
     //using another eventemitter to get the response from azure to display back to Azure Image Identifier.html
     bodyResponse.on('update', function () {
-        res.send(bodyResponse.data); //////////
+        res.write(bodyResponse.data);
+        res.flushHeaders();
     })
 })
 
