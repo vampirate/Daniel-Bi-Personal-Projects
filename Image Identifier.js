@@ -2,8 +2,8 @@
 var request = require('request');
 var bodyParser = require('body-parser');
 var events = require('events');
-var bodyHTML = new events.EventEmitter();
-var bodyResponse = new events.EventEmitter();
+var sendToAzureEmitter = new events.EventEmitter();
+var receiveFromAzureEmitter = new events.EventEmitter();
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -30,24 +30,24 @@ app.post('/getImageIdentifierUrl', urlencodedParser, function (req, res) {
   }
   console.log(response);
   //using an eventemitter to pass on the response to jsonurl variable
-  bodyHTML.data = response;
-  bodyHTML.emit('update');
+  sendToAzureEmitter.data = response;
+  sendToAzureEmitter.emit('update');
 
   //using another eventemitter to get the response from azure to display back to Azure Image Identifier.html
-  bodyResponse.on('update', function () {
-    var string = bodyResponse.data
+  receiveFromAzureEmitter.on('update', function () {
+    var string = receiveFromAzureEmitter.data
     res.send(JSON.stringify(string));
   })
 })
 
 app.listen(3000, function () {
-  console.log('listening')
+  console.log("Listening to port 3000")
 });
 
 
-bodyHTML.on('update', function () {
+sendToAzureEmitter.on('update', function () {
   //updating the image url
-  JsonURL = bodyHTML.data;
+  JsonURL = sendToAzureEmitter.data;
   console.log(JsonURL);
   //making the request to azure computer vision
   request({
@@ -60,8 +60,8 @@ bodyHTML.on('update', function () {
     body: JsonURL,
   }, function (error, response, body) {
     //passing the image description from azure back to html using another event emitter
-    bodyResponse.data = body;
-    bodyResponse.emit('update');
+    receiveFromAzureEmitter.data = body;
+    receiveFromAzureEmitter.emit('update');
     console.log(body)
     process.exit();
   });
