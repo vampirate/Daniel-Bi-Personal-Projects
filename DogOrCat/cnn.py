@@ -1,4 +1,3 @@
-import os
 import sys
 import numpy as np
 
@@ -7,7 +6,6 @@ from skimage.io import imread
 from skimage.transform import resize
 from keras.models import load_model
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 classifier = load_model('DogOrCat.h5')
 
 lines = sys.stdin.readlines()

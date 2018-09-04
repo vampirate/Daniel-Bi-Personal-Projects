@@ -51,7 +51,7 @@ bodyHTML.on('update', function () {
     //console.log("data is " + data);
     var spawn = require('child_process').spawn,
         py = spawn('python', ['-u', 'cnn.py']);
-
+    //console.log("cnn spawned");
     py.stdout.on('data', function (data) {
         console.log("data out of python is " + data);
         bodyResponse.data = data;
