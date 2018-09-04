@@ -53,7 +53,7 @@ bodyHTML.on('update', function () {
         py = spawn('python', ['-u', 'cnn.py']);
 
     py.stdout.on('data', function (data) {
-        //console.log("data out of python is " + data);
+        console.log("data out of python is " + data);
         bodyResponse.data = data;
         bodyResponse.emit('update');
         //console.log("updated1 is " + bodyResponse.data)

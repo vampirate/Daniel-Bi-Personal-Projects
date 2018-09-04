@@ -17,14 +17,14 @@
             <a href="../Home.html" fas fa-home>Home</a>
             <a href="../Information.html">My Info</a>
             <a href="../Image Identifier.html">Image Identifier</a>
-            <a href="DogOrCat.html">DogOrCat Page</a>
+            <a class="active" href="DogOrCat.html">DogOrCat</a>
         </div>
 
         <div class="ImageIdentifierMain">
             <h1>DogOrCat?</h1>
             <form>
-                <input name="urlInput" type="text" maxlength="512" id="urlInput" placeholder="Put your image URL here!">
-                <button class="button " type="button" onclick="loadDoc()"><span>Submit!</span></button>
+                <input id="urlInput" name="urlInput" type="text" maxlength="512" placeholder="Put your image URL here!">
+                <button id="myButton" class="button " type="button" onclick="loadDoc()"><span>Submit!</span></button>
             </form>
         </div>
 
@@ -35,11 +35,12 @@
 
         <script>
             function loadDoc() {
-                var input = "cat.jpg";
+                var input = document.getElementById("urlInput").value;
                 console.log(input);
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
-                    console.log("hey")
+timer = setTimeout(document.getElementById("ImageIdentifierTags").innerHTML = "1", 1000)
+                    document.getElementById("ImageIdentifierTags").innerHTML = "Executing code...<br>";
                     if (xhttp.readyState == 4) {
                         console.log("hey2")
                         var result = xhttp.responseText;
@@ -57,6 +58,10 @@
                 xhttp.send("imageurl=" + input);
             }
         </script>
+        <div class="footer">
+            <p>Made by Daniel Bi</p>
+            <p>Powered by Keras and Python</p>
+        </div>
     </body>
 
 </html>
