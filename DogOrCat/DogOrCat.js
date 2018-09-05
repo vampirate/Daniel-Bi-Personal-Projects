@@ -48,6 +48,7 @@ sendToCnnEmitter.on('update', function () {
     //console.log("data is " + data);
     var spawn = require('child_process').spawn,
         py = spawn('python', ['-u', __dirname + '/cnn.py']);
+    
     console.log("CNN spawned");
     py.stdout.on('data', function (data) {
         console.log("CNN replied: " + data);
