@@ -38,8 +38,9 @@
         xhttp.onreadystatechange = function () {
           if (xhttp.readyState == 4) {
             var resultParsed = JSON.parse(xhttp.responseText);
-            document.getElementById("ImageIdentifierTags").innerHTML = "The tags are: " + "<br>" + resultParsed.tags +
-              "<br>";
+            console.log(resultParsed)
+document.getElementById("ImageIdentifierTags").innerHTML = "The tags are: " + "<br>" + resultParsed.tags +
+"<br><br>" + "With confidence of " + resultParsed.captions[0].confidence + "<br>";
             document.getElementById("ImageIdentifierImage").src = input;
             document.getElementById("ImageIdentifierImage").height = 150;
           }
