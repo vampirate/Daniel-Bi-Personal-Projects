@@ -6,16 +6,16 @@
     <meta charset="utf-8">
     <title>Home Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" media="screen" href="mystyle.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'mystyle.css') }}" />
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   </head>
 
   <body>
     <div class="Navigation">
-      <a class="active" href="Home.html">Home</a>
-      <a href="Information.html">My Info</a>
-      <a href="Image Identifier.html">Image Identifier</a>
-      <a href="DogOrCat/DogOrCat.html">DogOrCat</a>
+      <a class="active" href="Home">Home</a>
+      <a href="Info">My Info</a>
+      <a href="Image">Image Identifier</a>
+      <a href="DogOrCat">DogOrCat</a>
     </div>
 
     <a>Need npm components: <br>

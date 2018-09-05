@@ -22,7 +22,7 @@
       <h1>Image identifier</h1>
       <form>
         <input name="urlInput" type="text" maxlength="512" id="urlInput" placeholder="Put your image URL here!">
-        <button class="button " type="button" onclick="loadDoc()"><span>Submit!</span></button>
+        <button class="button " type="button" onclick="submitURL()"><span>Submit!</span></button>
       </form>
     </div>
 
@@ -32,18 +32,15 @@
     </div>
 
     <script>
-      function loadDoc() {
+      function submitURL() {
         var input = document.getElementById("urlInput").value;
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
           if (xhttp.readyState == 4) {
             var resultParsed = JSON.parse(xhttp.responseText);
-            console.log(xhttp.responseText);
-            console.log(resultParsed);
             document.getElementById("ImageIdentifierTags").innerHTML = "The tags are: " + "<br>" + resultParsed.tags +
               "<br>";
             document.getElementById("ImageIdentifierImage").src = input;
-            console.log(input);
             document.getElementById("ImageIdentifierImage").height = 150;
           }
         };
