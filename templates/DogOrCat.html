@@ -24,7 +24,7 @@
             <h1>DogOrCat?</h1>
             <form>
                 <input id="urlInput" name="urlInput" type="text" maxlength="512" placeholder="Put your image URL here!">
-                <button id="myButton" class="button " type="button" onclick="loadDoc()"><span>Submit!</span></button>
+                <button id="myButton" class="button " type="button" onclick="submitURL()"><span>Submit!</span></button>
             </form>
         </div>
 
@@ -34,7 +34,7 @@
         </div>
 
         <script>
-            function loadDoc() {
+            function submitURL() {
                 var input = document.getElementById("urlInput").value;
                 console.log(input);
                 var xhttp = new XMLHttpRequest();
@@ -42,7 +42,7 @@
                     document.getElementById("DogOrCatTags").innerHTML = "Executing code...<br>";
                     if (xhttp.readyState == 4) {
                         var result = xhttp.responseText;
-                        console.log(result);
+                        console.log("result: " + result);
                         document.getElementById("DogOrCatTags").innerHTML = "It is a: " + "<br>" +
                             result +
                             "<br>";
@@ -51,9 +51,9 @@
                         document.getElementById("DogOrCatImage").height = 150;
                     }
                 };
-                xhttp.open("POST", "http://127.0.0.1:3001/getimageurl", true);
-                xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhttp.send("imageurl=" + input);
+                xhttp.open("POST", "{{ url_for('getimageurl') }}", true);
+                xhttp.setRequestHeader("Content-Type", "text/plain");
+                xhttp.send(input);
             }
         </script>
         <div class="footer">

@@ -1,6 +1,8 @@
 from flask import Flask, render_template
-app = Flask(__name__)
+import subprocess
+from subprocess import call
 
+app = Flask(__name__)
 
 @app.route("/")
 @app.route("/Home")
@@ -19,6 +21,14 @@ def ImageIdentifier():
 @app.route("/DogOrCat")
 def DogOrCat():
    return render_template("DogOrCat.html")
+
+@app.route("/getimageurl", methods = ['POST'])
+def getimageurl():
+    print("HEY")
+    url = "https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg"
+    out = subprocess.check_output(["python", "static/cnn/cnn.py", url])
+    print(out)
+    return(out)
 
 
 if __name__ == '__main__':

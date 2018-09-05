@@ -1,5 +1,4 @@
 //Initialize all the modules and variables
-var request = require('request');
 var bodyParser = require('body-parser');
 var events = require('events');
 var sendToCnnEmitter = new events.EventEmitter();
