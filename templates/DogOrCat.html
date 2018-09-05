@@ -52,8 +52,8 @@
                     }
                 };
                 xhttp.open("POST", "{{ url_for('getimageurl') }}", true);
-                xhttp.setRequestHeader("Content-Type", "text/plain");
-                xhttp.send(input);
+                xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhttp.send("imageurl=" + input);
             }
         </script>
         <div class="footer">

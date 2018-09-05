@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import subprocess
 from subprocess import call
 
@@ -24,10 +24,8 @@ def DogOrCat():
 
 @app.route("/getimageurl", methods = ['POST'])
 def getimageurl():
-    print("HEY")
-    url = "https://i.ytimg.com/vi/SfLV8hD7zX4/maxresdefault.jpg"
+    url = request.form['imageurl']
     out = subprocess.check_output(["python", "static/cnn/cnn.py", url])
-    print(out)
     return(out)
 
 
