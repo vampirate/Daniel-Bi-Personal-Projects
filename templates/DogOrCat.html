@@ -1,15 +1,26 @@
 {% extends "Navigation.html" %}
 {% block content %}
 
-<div class="Main">
+<div class="container-fluid">
     <h1>DogOrCat?</h1>
-    <form>
-        <input id="urlInput" name="urlInput" type="text" maxlength="512" placeholder="Put your image URL here!">
-        <button id="myButton" class="button " type="button" onclick="submitURL()"><span>Submit!</span></button>
-    </form>
-
-    <p id="IdentifierTags">It is a: </p>
-    <img id="IdentifierImage" src="{{ url_for('static', filename = 'Images/PlaceHolder.png') }}" height="300">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="jumbotron">
+                <form>
+                    <input id="urlInput" name=" urlInput" type="text" maxlength="512" placeholder="Put your image URL here!"
+                        , style="width: 100%">
+                    <p> </p>
+                    <button style="float: right" id="myButton" class="btn btn-success" type="button" onclick="submitURL()"><span>Submit!</span></button>
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-4">
+            <p id="IdentifierTags">It is a: </p>
+            <img id="IdentifierImage" class="img-responsive" src="{{ url_for('static', filename = 'Images/PlaceHolder.png') }}" , style=width:100%;>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -22,7 +33,7 @@
             if (xhttp.readyState == 4) {
                 var result = xhttp.responseText;
                 console.log("result: " + result);
-                document.getElementById("IdentifierTags").innerHTML = "It is a: " + "<br>" +
+                document.getElementById("IdentifierTags").innerHTML = "It is a: " +
                     result +
                     "<br>";
                 document.getElementById("IdentifierImage").src = input;
@@ -35,6 +46,7 @@
         xhttp.send("imageurl=" + input);
     }
 </script>
+
 <div class="footer">
     <p>Made by Daniel Bi</p>
     <p>Powered by Keras and Python</p>

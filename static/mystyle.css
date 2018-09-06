@@ -1,6 +1,5 @@
 /* Adding style to the body */
 body {
-    font-family: 'Roboto', sans-serif;
     text-decoration: none;
     background-color: #ffffff;
     padding-top: 3%;
@@ -17,14 +16,15 @@ body {
 
 /* Add a black background color to the top navigation */
 .Navigation {
+    z-index: 1;
     position: fixed;
     top: 0;
     width: 100%;
     background-color: #dbcece;
     overflow: hidden;
     text-decoration: none;  
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 /* Style the links inside the navigation bar */
@@ -66,32 +66,6 @@ body {
     margin: 5px;
 }
 
-/* Adding style to the button */
-.button span {
-    cursor: pointer;
-    display: inline-block;
-    position: relative;
-    transition: 0.3s;
-}
-
-.button span:after {
-    content: '\00bb';
-    position: absolute;
-    opacity: 0;
-    top: 0;
-    right: -20px;
-    transition: 0.3s;
-}
-
-.button:hover span {
-    padding-right: 25px;
-}
-
-.button:hover span:after {
-    opacity: 1;
-    right: 0;
-}
-
 .Main {
     padding-left: 1.5%;
     padding-top: 1%;
@@ -105,4 +79,9 @@ body {
     color: red;
     text-align: right;
     font-family: 'Roboto', sans-serif;
+}
+
+.jumbotron {
+    padding: 3%;
+    overflow:hidden;
 }
