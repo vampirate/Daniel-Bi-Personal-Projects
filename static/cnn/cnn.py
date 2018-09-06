@@ -8,15 +8,14 @@ from skimage.io import imread
 from skimage.transform import resize
 from keras.models import load_model
 
-
 path = os.path.dirname(os.path.abspath(__file__))
 
 url = str(sys.argv[1])
-urllib.request.urlretrieve(url, "image.jpg")
+urllib.request.urlretrieve(url, "localImage.jpg")
 
 modelpath = path + "/DogOrCat.h5"
 classifier = load_model(modelpath)
-img = imread(path + "/image.jpg")
+img = imread(path + "/localImage.jpg")
 
 img = resize(img,(64,64))
 img = np.expand_dims(img,axis=0)

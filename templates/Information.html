@@ -1,34 +1,13 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
+{% extends "Navigation.html" %}
+{% block content %}
 
-  <head>
-    <meta charset="utf-8">
-    <title>Information Page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'mystyle.css') }}" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-  </head>
+<div class="Main">
+  <h1>My name is Daniel</h1>
+  <img src="{{ url_for('static', filename = 'images/ProfilePicture.jpg')}}" height="300"></img>
+  <p>I graduated from UNSW with a Bachelor of Computer Engineering
+    and Master of Biomedical Engineering</p>
+  <h3>My experience</h3>
+  <h3>Personal Projects</h3>
+</div>
 
-  <body>
-    <div class="Navigation">
-      <a href="Home">Home</a>
-      <a class="active" href="Info">My Info</a>
-      <a href="Image">Image Identifier</a>
-      <a href="DogOrCat">DogOrCat</a>
-    </div>
-
-    <div class="MyInformation">
-      <h1>My name is Daniel</h1>
-      <img src="{{ url_for('static', filename = 'images/ProfilePicture.jpg')}}" height="300"></img>
-      <p>I graduated from UNSW with a Bachelor of Computer Engineering
-        and Master of Biomedical Engineering</p>
-      <h3>My experience</h3>
-      <h3>Personal Projects</h3>
-    </div>
-
-
-    </div>
-
-  </body>
-
-</html>
+{% endblock %}

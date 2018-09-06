@@ -1,65 +1,44 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
+{% extends "Navigation.html" %}
+{% block content %}
 
-    <head>
-        <meta charset="utf-8" />
-        <title>DogOrCat?</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'mystyle.css') }}" />
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
-            crossorigin="anonymous">
-        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
-    </head>
+<div class="Main">
+    <h1>DogOrCat?</h1>
+    <form>
+        <input id="urlInput" name="urlInput" type="text" maxlength="512" placeholder="Put your image URL here!">
+        <button id="myButton" class="button " type="button" onclick="submitURL()"><span>Submit!</span></button>
+    </form>
 
-    <body>
-        <div class="Navigation">
-            <a href="Home">Home</a>
-            <a href="Info">My Info</a>
-            <a href="Image">Image Identifier</a>
-            <a class="active" href="DogOrCat">DogOrCat</a>
-        </div>
+    <p id="IdentifierTags">It is a: </p>
+    <img id="IdentifierImage" src="{{ url_for('static', filename = 'Images/PlaceHolder.png') }}" height="300">
+</div>
 
-        <div class="DogOrCatMain">
-            <h1>DogOrCat?</h1>
-            <form>
-                <input id="urlInput" name="urlInput" type="text" maxlength="512" placeholder="Put your image URL here!">
-                <button id="myButton" class="button " type="button" onclick="submitURL()"><span>Submit!</span></button>
-            </form>
-        </div>
-
-        <div class="DogOrCatResult">
-            <p id="DogOrCatTags">It is a: </p>
-            <img id="DogOrCatImage" src="{{ url_for('static', filename = 'Images/PlaceHolder.png') }}">
-        </div>
-
-        <script>
-            function submitURL() {
-                var input = document.getElementById("urlInput").value;
+<script>
+    function submitURL() {
+        var input = document.getElementById("urlInput").value;
+        console.log(input);
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            document.getElementById("IdentifierTags").innerHTML = "Executing code...<br>";
+            if (xhttp.readyState == 4) {
+                var result = xhttp.responseText;
+                console.log("result: " + result);
+                document.getElementById("IdentifierTags").innerHTML = "It is a: " + "<br>" +
+                    result +
+                    "<br>";
+                document.getElementById("IdentifierImage").src = input;
                 console.log(input);
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    document.getElementById("DogOrCatTags").innerHTML = "Executing code...<br>";
-                    if (xhttp.readyState == 4) {
-                        var result = xhttp.responseText;
-                        console.log("result: " + result);
-                        document.getElementById("DogOrCatTags").innerHTML = "It is a: " + "<br>" +
-                            result +
-                            "<br>";
-                        document.getElementById("DogOrCatImage").src = input;
-                        console.log(input);
-                        document.getElementById("DogOrCatImage").height = 150;
-                    }
-                };
-                xhttp.open("POST", "{{ url_for('getimageurl') }}", true);
-                xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhttp.send("imageurl=" + input);
+                document.getElementById("IdentifierImage").height = 150;
             }
-        </script>
-        <div class="footer">
-            <p>Made by Daniel Bi</p>
-            <p>Powered by Keras and Python</p>
-        </div>
-    </body>
+        };
+        xhttp.open("POST", "{{ url_for('getimageurl') }}", true);
+        xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhttp.send("imageurl=" + input);
+    }
+</script>
+<div class="footer">
+    <p>Made by Daniel Bi</p>
+    <p>Powered by Keras and Python</p>
+</div>
+</body>
 
-</html>
+{% endblock %}

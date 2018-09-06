@@ -1,64 +1,44 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
+{% extends "Navigation.html" %}
+{% block content %}
 
-  <head>
-    <meta charset="utf-8">
-    <title>Image Identifier</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'mystyle.css') }}" />
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-  </head>
+<div class="Main">
+  <h1>Image Identifier</h1>
+  <form>
+    <input id="urlInput" name="urlInput" type="text" maxlength="512" placeholder="Put your image URL here!">
+    <button id="myButton" class="button " type="button" onclick="submitURL()"><span>Submit!</span></button>
+  </form>
 
-  <body>
-    <div class="Navigation">
-      <a href="Home">Home</a>
-      <a href="Info">My Info</a>
-      <a class="active" href="Image">Image Identifier</a>
-      <a href="DogOrCat">DogOrCat</a>
-    </div>
+  <p id="IdentifierTags">It is a: </p>
+  <img id="IdentifierImage" src="{{ url_for('static', filename = 'Images/PlaceHolder.png') }}" height="300">
+</div>
 
-    <div class="ImageIdentifierMain">
-      <h1>Image identifier</h1>
-      <form>
-        <input name="urlInput" type="text" maxlength="512" id="urlInput" placeholder="Put your image URL here!">
-        <button class="button " type="button" onclick="submitURL()"><span>Submit!</span></button>
-      </form>
-    </div>
-
-    <div class="ImageIdentifierResult">
-      <p id="ImageIdentifierTags">The tags are: </p>
-      <img id="ImageIdentifierImage" src="{{ url_for('static', filename = 'Images/PlaceHolder.png') }}">
-    </div>
-
-    <script>
-      function submitURL() {
-        var input = document.getElementById("urlInput").value;
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-          if (xhttp.readyState == 4) {
-            var resultParsed = JSON.parse(xhttp.responseText);
-            console.log(resultParsed)
-document.getElementById("ImageIdentifierTags").innerHTML = "The tags are: " + "<br>" + resultParsed.tags +
-"<br><br>" + "With confidence of " + resultParsed.captions[0].confidence + "<br>";
-            document.getElementById("ImageIdentifierImage").src = input;
-            document.getElementById("ImageIdentifierImage").height = 150;
-          }
-        };
-
-        xhttp.open("POST",
-          "https://prod-18.australiaeast.logic.azure.com:443/workflows/18c4993cd07a4951bd12f96317183f91/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Q4LMKgylWjTRUeF8oQbh94ibtctOyfy-af5r5Q_Faz0",
-          true);
-        xhttp.setRequestHeader("Ocp-Apim-Subscription-Key", "c07929b7faf4475aa2889715230e2ee3")
-        xhttp.setRequestHeader("Content-Type", "application/json");
-        xhttp.send('{ "url": "' + input + '"}');
+<script>
+  function submitURL() {
+    var input = document.getElementById("urlInput").value;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+      if (xhttp.readyState == 4) {
+        var resultParsed = JSON.parse(xhttp.responseText);
+        console.log(resultParsed)
+        document.getElementById("IdentifierTags").innerHTML = "The tags are: " + "<br>" + resultParsed.tags +
+          "<br><br>" + "With confidence of " + resultParsed.captions[0].confidence + "<br>";
+        document.getElementById("IdentifierImage").src = input;
+        document.getElementById("IdentifierImage").height = 150;
       }
-    </script>
+    };
 
-    <div class="footer">
-      <p>Made by Daniel Bi</p>
-      <p>Powered by Microsoft Azure Computer Vision</p>
-    </div>
-  </body>
+    xhttp.open("POST",
+      "https://prod-18.australiaeast.logic.azure.com:443/workflows/18c4993cd07a4951bd12f96317183f91/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Q4LMKgylWjTRUeF8oQbh94ibtctOyfy-af5r5Q_Faz0",
+      true);
+    xhttp.setRequestHeader("Ocp-Apim-Subscription-Key", "c07929b7faf4475aa2889715230e2ee3")
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send('{ "url": "' + input + '"}');
+  }
+</script>
 
-</html>
+<div class="footer">
+  <p>Made by Daniel Bi</p>
+  <p>Powered by Microsoft Azure Computer Vision</p>
+</div>
+
+{% endblock %}

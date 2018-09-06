@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>Welcome!</title>
+    {% endif %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'mystyle.css') }}" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="Navigation">
+      {% if active == "Home" %}
+      <a class="active" href="Home">Home</a>
+      {% else %}
+      <a href="Home">Home</a>
+      {% endif %}
+
+      {% if active == "Info" %}
+      <a class="active" href="Info">My Info</a>
+      {% else %}
+      <a href="Info">My Info</a>
+      {% endif %}
+
+      {% if active == "Image" %}
+      <a class="active" href="Image">Image Identifier</a>
+      {% else %}
+      <a href="Image">Image Identifier</a>
+      {% endif %}
+
+      {% if active == "DogOrCat" %}
+      <a class="active" href="DogOrCat">DogOrCat</a>
+      {% else %}
+      <a href="DogOrCat">DogOrCat</a>
+      {% endif %} 
+
+    </div>
+  </body>
+
+  {% block content %}{% endblock %}
+
+</html>
