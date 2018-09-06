@@ -2,7 +2,9 @@
 {% block content %}
 
 <div class="container-fluid">
-    <h1>DogOrCat?</h1>
+    {% if title %}
+    <h1>{{ title }}</h1>
+    {% endif %}
     <div class="row">
         <div class="col-sm-4">
             <div class="jumbotron">
@@ -18,7 +20,8 @@
         </div>
         <div class="col-sm-4">
             <p id="IdentifierTags">It is a: </p>
-            <img id="IdentifierImage" class="img-responsive" src="{{ url_for('static', filename = 'Images/PlaceHolder.png') }}" , style=width:100%;>
+            <img id="IdentifierImage" class="img-responsive" src="{{ url_for('static', filename = 'Images/PlaceHolder.png') }}"
+                , style=width:100%;>
         </div>
     </div>
 </div>
