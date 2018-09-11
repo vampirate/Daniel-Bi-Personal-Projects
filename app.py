@@ -27,7 +27,7 @@ def DogOrCat():
 @app.route("/getimageurl", methods = ['POST'])
 def getimageurl():
     url = request.form['imageurl']
-    ans = subprocess.check_output(["python", "static/cnn/CNN.py", url])
+    ans = subprocess.check_output(["python", "static/cnn/dogcat.py", url])
     return ans.decode("utf-8")
     
 
