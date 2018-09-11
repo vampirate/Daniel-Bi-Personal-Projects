@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import subprocess
 from subprocess import call
 
@@ -25,7 +25,7 @@ def DogOrCat():
 def getimageurl():
     url = request.form['imageurl']
     out = subprocess.check_output(["python", "static/cnn/CNN.py", url])
-    return str(out)
+    return jsonify(out)
 
 @app.after_request
 def add_header(response):
