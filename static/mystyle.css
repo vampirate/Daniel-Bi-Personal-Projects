@@ -22,7 +22,7 @@ body {
     width: 100%;
     background-color: #dbcece;
     overflow: hidden;
-    text-decoration: none;  
+    text-decoration: none;
     padding-top: 5px;
     padding-bottom: 5px;
 }
@@ -79,9 +79,10 @@ body {
     color: red;
     text-align: right;
     font-family: 'Roboto', sans-serif;
+    opacity: 0.5;
 }
 
 .jumbotron {
     padding: 3%;
-    overflow:hidden;
+    overflow: hidden;
 }
