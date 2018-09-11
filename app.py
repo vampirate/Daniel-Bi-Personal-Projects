@@ -25,7 +25,7 @@ def DogOrCat():
 def getimageurl():
     url = request.form['imageurl']
     out = subprocess.check_output(["python", "static/cnn/CNN.py", url])
-    return(out)
+    return str(out)
 
 @app.after_request
 def add_header(response):
