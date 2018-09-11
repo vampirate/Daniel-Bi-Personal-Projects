@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request, jsonify
-import subprocess
+import subprocess, logging, sys
 from subprocess import call
 
+
 app = Flask(__name__)
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+app.logger.setLevel(logging.ERROR)
 
 @app.route("/")
 @app.route("/Home")
@@ -24,8 +27,8 @@ def DogOrCat():
 @app.route("/getimageurl", methods = ['POST'])
 def getimageurl():
     url = request.form['imageurl']
-    ans = subprocess.check_output(["python", "static/cnn/c.py", url])
-    return jsonify(ans.decode("utf-8"))
+    ans = subprocess.check_output(["python", "static/cnn/CNN.py", url])
+    return ans.decode("utf-8")
     
 
 @app.after_request
