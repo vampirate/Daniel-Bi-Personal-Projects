@@ -7,12 +7,9 @@
   {% endif %}
   <div class="col-sm-4">
     <div class="jumbotron">
-      <form>
-        <input id="urlInput" name=" urlInput" type="text" maxlength="512" placeholder="Put your image URL here!" ,
-          style="width: 100%">
-        <p> </p>
-        <button style="float: right" id="myButton" class="btn btn-success" type="button" onclick="submitURL()"><span>Submit!</span></button>
-      </form>
+      <input id="urlInput" name=" urlInput" type="text" maxlength="512" placeholder="Put your image URL here!", style="width: 100%">
+      <p> </p>
+      <button style="float: right" id="myButton" class="btn btn-success" type="button" onclick="submitURL()"><span>Submit!</span></button>
     </div>
   </div>
   <div class="col-sm-4">
@@ -20,11 +17,19 @@
     <img id="IdentifierImage" class="img-responsive" src="{{ url_for('static', filename = 'Images/Placeholder.png') }}"
       , style=width:100%;>
   </div>
-  </div>
+</div>
 
 </div>
 
 <script>
+  var input = document.getElementById("urlInput");
+  input.addEventListener("keyup", function (event) {
+    event.preventDefault();
+    if (event.keyCode === 13) {
+      submitURL();
+    }
+  });
+
   function submitURL() {
     var input = document.getElementById("urlInput").value;
     var xhttp = new XMLHttpRequest();
