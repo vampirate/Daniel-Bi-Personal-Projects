@@ -5,25 +5,22 @@
     {% if title %}
     <h1>{{ title }}</h1>
     {% endif %}
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="jumbotron">
-                <form>
-                    <input id="urlInput" name=" urlInput" type="text" maxlength="512" placeholder="Put your image URL here!"
-                        , style="width: 100%">
-                    <p> </p>
-                    <button style="float: right" id="myButton" class="btn btn-success" type="button" onclick="submitURL()"><span>Submit!</span></button>
-                </form>
-            </div>
-        </div>
-        <div class="col-sm-1">
-        </div>
-        <div class="col-sm-4">
-            <p id="IdentifierTags">The picture is a: </p>
-            <img id="IdentifierImage" class="img-responsive" src="{{ url_for('static', filename = 'Images/Placeholder.png') }}"
-                , style=width:100%;>
+    <div class="col-sm-4">
+        <div class="jumbotron">
+            <form>
+                <input id="urlInput" name=" urlInput" type="text" maxlength="512" placeholder="Put your image URL here!"
+                    , style="width: 100%">
+                <p> </p>
+                <button style="float: right" id="myButton" class="btn btn-success" type="button" onclick="submitURL()"><span>Submit!</span></button>
+            </form>
         </div>
     </div>
+    <div class="col-sm-4">
+        <p id="IdentifierTags">It is a: </p>
+        <img id="IdentifierImage" class="img-responsive" src="{{ url_for('static', filename = 'Images/Placeholder.png') }}"
+            , style=width:100%;>
+    </div>
+
 </div>
 
 <script>
