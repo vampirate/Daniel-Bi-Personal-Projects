@@ -24,6 +24,10 @@ def ImageIdentifier():
 def DogOrCat():
    return render_template("DogOrCat.html", title = "Dog or Cat?", active = "DogOrCat")
 
+@app.route("/Kmeans")
+def Kmeans():
+   return render_template("K-Means.html", title = "K-means Clustering", active = "Kmeans")
+
 @app.route("/getimageurl", methods = ['POST'])
 def getimageurl():
     url = request.form['imageurl']

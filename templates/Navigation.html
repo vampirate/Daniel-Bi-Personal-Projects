@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
       crossorigin="anonymous">
-      
+
     <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename = 'mystyle.css') }}" />
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
@@ -42,6 +42,12 @@
       <a class="active" href="DogOrCat">DogOrCat</a>
       {% else %}
       <a href="DogOrCat">DogOrCat</a>
+      {% endif %}
+
+      {% if active == "Kmeans" %}
+      <a class="active" href="Kmeans">Kmeans</a>
+      {% else %}
+      <a href="Kmeans">Kmeans</a>
       {% endif %}
 
     </div>
