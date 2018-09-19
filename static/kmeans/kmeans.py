@@ -1,13 +1,17 @@
 import numpy as np
 import random
 import math, copy
-import time
+import time, sys
 import matplotlib.pyplot as plt
 import matplotlib.animation as anim
 
 k = 3
 n = 100
 r = 40
+
+k = int(sys.argv[1])
+n = int(sys.argv[2])
+r = int(sys.argv[3])
 plt.ion()
 
 xpoints = []
@@ -138,7 +142,7 @@ def draw2():
             cpoints.append(point[2])
     plt.scatter(xpoints, ypoints, c=cpoints)
     plt.scatter(xcpoints, ycpoints, c="r")
-    plt.pause(1)
+    plt.pause(0.3)
     plt.draw()
     plt.clf()
 
@@ -149,7 +153,7 @@ def draw2():
         ycpoints.append(point[1])
     plt.scatter(xpoints, ypoints, c=cpoints)
     plt.scatter(xcpoints, ycpoints, c="r")
-    plt.pause(1)
+    plt.pause(0.3)
     plt.draw()
     plt.clf()
 

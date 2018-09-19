@@ -5,7 +5,56 @@
     {% if title %}
     <h1>{{ title }}</h1>
     {% endif %}
-    
+
+    <div class="col-sm-4">
+        <div class="jumbotron">
+            <div>
+                <input id="clusters" name="k" type="text" maxlength="10" placeholder="Number of clusters">
+                <p> </p>
+                <input id="points" name="n" type="text" maxlength="10" placeholder="Number of points">
+                <p> </p>
+                <input id="rounds" name="r" type="text" maxlength="10" placeholder="Number of iterations">
+                <p> </p>
+                <button id="myButton" class="btn btn-success" type="button" onclick="submitCluster()"><span>Submit!</span></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var k = document.getElementById("clusters")
+        var n = document.getElementById("points")
+        var r = document.getElementById("rounds")
+        k.addEventListener("keyup", function (event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                submitCluster();
+            }
+        });
+        n.addEventListener("keyup", function (event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                submitCluster();
+            }
+        });
+        r.addEventListener("keyup", function (event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                submitCluster();
+            }
+        });
+
+        function submitCluster() {
+            var k = document.getElementById("clusters").value
+            var n = document.getElementById("points").value
+            var r = document.getElementById("rounds").value
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {};
+            xhttp.open("POST", "{{ url_for('KmeansStart') }}", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("k=" + k + "&n=" + n + "&r=" + r);
+        }
+    </script>
+
 </div>
 
 {% endblock %}

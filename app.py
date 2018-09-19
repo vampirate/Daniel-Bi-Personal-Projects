@@ -26,7 +26,16 @@ def DogOrCat():
 
 @app.route("/Kmeans")
 def Kmeans():
-   return render_template("K-Means.html", title = "K-means Clustering", active = "Kmeans")
+    return render_template("K-Means.html", title="K-means Clustering", active="Kmeans")
+    
+@app.route("/KmeansStart", methods = ['POST'])
+def KmeansStart():
+    k = request.form['k']
+    n = request.form['n']
+    r = request.form['r']
+    subprocess.run(["python", "static/kmeans/kmeans.py", k, n, r])
+    print("starting")
+    return "hey"
 
 @app.route("/getimageurl", methods = ['POST'])
 def getimageurl():
