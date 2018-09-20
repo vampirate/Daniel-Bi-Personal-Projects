@@ -1,7 +1,7 @@
 import numpy as np
 import random, math, copy, time, sys
 import matplotlib
-matplotlib.use('Agg')
+matplotlib.use("macosx")
 import matplotlib.pyplot as plt
 import matplotlib.animation as anim
 
@@ -176,4 +176,4 @@ def showCentroids():
 for count in range(r):
     clusters = []
     update()
-    draw()
+    draw2()
