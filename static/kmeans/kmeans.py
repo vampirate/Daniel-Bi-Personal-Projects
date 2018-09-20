@@ -1,9 +1,13 @@
 import numpy as np
 import random, math, copy, time, sys
 import matplotlib
-matplotlib.use("macosx")
+#matplotlib.use("macosx")
 import matplotlib.pyplot as plt
 import matplotlib.animation as anim
+import itertools
+from bokeh.plotting import figure 
+from bokeh.io import show
+from bokeh.palettes import Spectral11
 
 print("Program starting")
 k = 3
@@ -88,7 +92,7 @@ def updateCentroids():
         centeroid[count] = [sumX / len(clusters[count]), sumY / len(clusters[count])]
     if oldCenteroid == centeroid:
         print("k-means cluster is stablized")
-        time.sleep(1)
+        time.sleep(10)
         print("closing the program...")
         time.sleep(1)
         exit()
@@ -143,7 +147,7 @@ def draw2():
             cpoints.append(point[2])
     plt.scatter(xpoints, ypoints, c=cpoints)
     plt.scatter(xcpoints, ycpoints, c="r")
-    plt.pause(0.3)
+    plt.pause(1)
     plt.draw()
     plt.clf()
 
@@ -154,9 +158,39 @@ def draw2():
         ycpoints.append(point[1])
     plt.scatter(xpoints, ypoints, c=cpoints)
     plt.scatter(xcpoints, ycpoints, c="r")
-    plt.pause(0.3)
+    plt.pause(1)
     plt.draw()
     plt.clf()
+
+########################################################################################
+# drawing the clusters in bokeh
+########################################################################################
+def draw3():
+    global xpoints
+    global ypoints
+    global cpoints
+    global xcpoints
+    global ycpoints
+
+    xpoints = []
+    ypoints = []
+    xcpoints = []
+    ycpoints = []
+    colors = []
+    p = figure(width=500, height=500)
+    for cluster, color in zip(clusters, itertools.cycle(Spectral11)):
+        for point in cluster:
+            xpoints.append(point[0])
+            ypoints.append(point[1])
+            colors.append(color)
+
+    for point in centeroid:
+        xcpoints.append(point[0])
+        ycpoints.append(point[1])
+
+    p.circle(xcpoints, ycpoints, size=15, color="red")
+    p.triangle(xpoints, ypoints, size=((100 / n) + 10), fill_color=colors)
+    show(p)
 
 ########################################################################################
 # show the points
@@ -176,4 +210,4 @@ def showCentroids():
 for count in range(r):
     clusters = []
     update()
-    draw2()
+    draw3()
