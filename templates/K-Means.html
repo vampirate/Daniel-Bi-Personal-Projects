@@ -9,7 +9,8 @@
     <div class="col-sm-4">
         <div class="jumbotron">
             <div>
-                <input id="clusters" name="k" type="text" maxlength="10" placeholder="Number of clusters">
+                <input id="clusters" name="k" type="text" maxlength="10" placeholder="Number of clusters" oninvalid="alert('Cant leave the field blank')"
+                    pattern=".{1,}">
                 <p> </p>
                 <input id="points" name="n" type="text" maxlength="10" placeholder="Number of points">
                 <p> </p>
