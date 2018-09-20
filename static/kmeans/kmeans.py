@@ -1,7 +1,7 @@
 import numpy as np
-import random
-import math, copy
-import time, sys
+import random, math, copy, time, sys
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.animation as anim
 
