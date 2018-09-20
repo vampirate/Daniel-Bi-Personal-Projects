@@ -1,10 +1,11 @@
 import numpy as np
 import random, math, copy, time, sys
 import matplotlib
-matplotlib.use('Agg')
+#matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.animation as anim
 
+print("Program starting")
 k = 3
 n = 100
 r = 40
@@ -175,4 +176,4 @@ def showCentroids():
 for count in range(r):
     clusters = []
     update()
-    draw2()
+    draw()
