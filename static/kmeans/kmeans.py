@@ -7,7 +7,7 @@ import matplotlib.animation as anim
 import itertools
 from bokeh.plotting import figure 
 from bokeh.io import show
-from bokeh.palettes import Spectral11
+from bokeh.palettes import Colorblind7
 
 print("Program starting")
 k = 3
@@ -82,6 +82,7 @@ def groupingIntoClusters():
 # getting centroid for each cluster
 ########################################################################################
 def updateCentroids():
+    global finishFlag
     oldCenteroid = copy.deepcopy(centeroid)
     for count in range(k):
         sumX = 0
@@ -92,10 +93,24 @@ def updateCentroids():
         centeroid[count] = [sumX / len(clusters[count]), sumY / len(clusters[count])]
     if oldCenteroid == centeroid:
         print("k-means cluster is stablized")
-        time.sleep(10)
+        time.sleep(1)
         print("closing the program...")
         time.sleep(1)
-        exit()
+        #exit()
+        finishFlag = 1
+
+
+########################################################################################
+# show the points
+########################################################################################
+def showPoints():
+    for cluster in clusters:
+        for point in cluster:
+            print(point)
+
+def showCentroids():
+    for point in centeroid:
+        print(point)
 
 ########################################################################################
 # main algorith
@@ -108,7 +123,7 @@ def update():
 ########################################################################################
 # drawing the clusters in ASCII
 ########################################################################################
-def draw():
+def drawASCII():
     print("Iteration: " + str(count))
     printflag = 1
     for countY in range(n, -1, -1):
@@ -130,7 +145,7 @@ def draw():
 ########################################################################################
 # drawing the clusters in matlablib
 ########################################################################################
-def draw2():
+def drawMatlibplot():
     global xpoints
     global ypoints
     global cpoints
@@ -165,7 +180,7 @@ def draw2():
 ########################################################################################
 # drawing the clusters in bokeh
 ########################################################################################
-def draw3():
+def drawBokeh():
     global xpoints
     global ypoints
     global cpoints
@@ -177,8 +192,8 @@ def draw3():
     xcpoints = []
     ycpoints = []
     colors = []
-    p = figure(width=500, height=500)
-    for cluster, color in zip(clusters, itertools.cycle(Spectral11)):
+
+    for cluster, color in zip(clusters, itertools.cycle(Colorblind7)):
         for point in cluster:
             xpoints.append(point[0])
             ypoints.append(point[1])
@@ -188,26 +203,34 @@ def draw3():
         xcpoints.append(point[0])
         ycpoints.append(point[1])
 
-    p.circle(xcpoints, ycpoints, size=15, color="red")
-    p.triangle(xpoints, ypoints, size=((100 / n) + 10), fill_color=colors)
-    show(p)
+    p.circle(xcpoints, ycpoints, size=15, fill_color="red", line_color=None)
+    p.triangle(xpoints, ypoints, size=((100 / n) + 10), fill_color=colors, line_color=None)
 
-########################################################################################
-# show the points
-########################################################################################
-def showPoints():
-    for cluster in clusters:
-        for point in cluster:
-            print(point)
-
-def showCentroids():
-    for point in centeroid:
-        print(point)
 
 ########################################################################################
 # main function
 ########################################################################################
+ps = []
+finishFlag = 0
+
 for count in range(r):
     clusters = []
     update()
-    draw3()
+
+    if (finishFlag == 1):
+        print("finish cycle")
+        break
+
+    p = figure(width=500, height=500, title="Frame: " + str(count))
+
+    drawBokeh()
+    ps.append(p)
+    show(ps[count])
+
+        
+
+
+
+
+
+
