@@ -3,7 +3,7 @@ import numpy as np
 import random, math, copy, time, sys
 from random import random
 from bokeh.palettes import Colorblind7
-from bokeh.models import CustomJS, ColumnDataSource, Slider
+from bokeh.models import CustomJS, ColumnDataSource, Slider, DataSource
 from bokeh.plotting import figure, show
 from bokeh.layouts import column
 
@@ -145,26 +145,27 @@ def update():
     xcpoints = []
     ycpoints = []
     colors = []
-    #if (finishFlag == 0):
+
     assignCoordinatesToCentroids()
     groupingIntoClusters()
     updateCentroids()
 
-    for cluster, color in zip(clusters, itertools.cycle(Colorblind7)):
-        for point in cluster:
-            xpoints.append(point[0])
-            ypoints.append(point[1])
-            colors.append(color)
+    if (finishFlag == 0):
+        for cluster, color in zip(clusters, itertools.cycle(Colorblind7)):
+            for point in cluster:
+                xpoints.append(point[0])
+                ypoints.append(point[1])
+                colors.append(color)
 
-    for point in centeroid:
-        xcpoints.append(point[0])
-        ycpoints.append(point[1])
+        for point in centeroid:
+            xcpoints.append(point[0])
+            ycpoints.append(point[1])
 
-    totalXPoints.append(xpoints)
-    totalYPoints.append(ypoints)
-    totalXCPoints.append(xcpoints)
-    totalYCPoints.append(ycpoints)
-    totalColors.append(colors)
+        totalXPoints.append(xpoints)
+        totalYPoints.append(ypoints)
+        totalXCPoints.append(xcpoints)
+        totalYCPoints.append(ycpoints)
+        totalColors.append(colors)
 
 ########################################################################################
 # main function
@@ -172,31 +173,32 @@ def update():
 ps = []
 finishFlag = 0
 
-for count2 in range(r):
+for countFrames in range(r):
     update()
-    #showPoints()  
-    #showCentroids()
+    if finishFlag == 1:
+        break
     
+sourcePoint = ColumnDataSource(data=dict(x=totalXPoints[0], y=totalYPoints[0], color=totalColors[0]))
+sourcePointTotal = ColumnDataSource(data=dict(xdata=totalXPoints, ydata=totalYPoints, cdata=totalColors))
 
-#print("size of totalXPoints[0] is " + str(len(totalXPoints[0])))
-#print("size pf totalXPoints is " + str(len(totalXPoints)))
-#print("size of totalYPoints[0] is " + str(len(totalYPoints[0])))
-#print("size of totalColors[0] is " + str(len(totalColors[0])))
-s = ColumnDataSource(data=dict(x=totalXPoints[0], y=totalYPoints[0], color=totalColors[0], xdata=totalXPoints, ydata=totalYPoints, cdata=totalColors))
-s2 = ColumnDataSource(data=dict(x=totalXCPoints[0], y=totalYCPoints[0], xdata=totalXCPoints, ydata=totalYCPoints))
+sourceCentroid = ColumnDataSource(data=dict(x=totalXCPoints[0], y=totalYCPoints[0]))
+sourceCentroidTotal = ColumnDataSource(data=dict(xdata=totalXCPoints, ydata=totalYCPoints))
+
 p = figure(plot_width=600, plot_height=600)
-p.circle('x', 'y', size=5 + 400/n, source=s, alpha=0.7, fill_color="color", line_color="black")
-p.triangle('x', 'y', size=10, source=s2, color="red")
+p.circle('x', 'y', size=5 + 400/n, source=sourcePoint, alpha=0.7, fill_color="color", line_color="black")
+p.triangle('x', 'y', size=10, source=sourceCentroid, color="red")
 
-callback = CustomJS(args=dict(s=s), code="""
+callbackPoints = CustomJS(args=dict(s=sourcePoint, sT=sourcePointTotal), code="""
         var data = s.data;
         var frame = cb_obj.value - 1
         var x = data['x']
         var y = data['y']
         var c = data['color']
-        var xdata = data['xdata']
-        var ydata = data['ydata']
-        var cdata = data['cdata']
+
+        var data2 = sT.data;
+        var xdata = data2['xdata']
+        var ydata = data2['ydata']
+        var cdata = data2['cdata']
         for (var i = 0; i < x.length; i++) {
             x[i] = xdata[frame][i]
             y[i] = ydata[frame][i]
@@ -205,22 +207,24 @@ callback = CustomJS(args=dict(s=s), code="""
         s.change.emit();
     """)
 
-callback2 = CustomJS(args=dict(s2=s2), code="""
-        var data = s2.data;
+callbackCentroids = CustomJS(args=dict(s=sourceCentroid, sT=sourceCentroidTotal), code="""
+        var data = s.data;
         var frame = cb_obj.value - 1
         var x = data['x']
         var y = data['y']
-        var xdata = data['xdata']
-        var ydata = data['ydata']
+
+        var data2 = sT.data
+        var xdata = data2['xdata']
+        var ydata = data2['ydata']
         for (var i = 0; i < x.length; i++) {
             x[i] = xdata[frame][i]
             y[i] = ydata[frame][i]
         }
-        s2.change.emit();
+        s.change.emit();
     """)
 
-slider = Slider(start=1, end=r, value=1, step=1, title="Frames")
-slider.js_on_change('value', callback, callback2)
+slider = Slider(start=1, end=countFrames, value=1, step=1, title="Frames")
+slider.js_on_change('value', callbackCentroids, callbackPoints)
 layout = column(slider, p)
 show(layout)
 
