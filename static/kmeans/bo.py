@@ -1,61 +1,31 @@
-import numpy as np
-from bokeh.plotting import figure,ColumnDataSource
-from bokeh.io import curdoc
-from bokeh.layouts import layout
-from bokeh.models import  Slider, Button, Label
-from bokeh.palettes import Spectral11
-from skimage.external import tifffile as T
+from bokeh.layouts import column
+from bokeh.models import CustomJS, ColumnDataSource, Slider
+from bokeh.plotting import Figure, output_file, show
 
+output_file("js_on_change.html")
 
-img_o=T.imread('C:/Users/UserXX/Desktop/Image_Sequence.tif')
+x = [x*0.005 for x in range(0, 200)]
+y = x
 
-frames=list(range(0,img_o.shape[0]))
-img=np.flip(img_o,1)
+source = ColumnDataSource(data=dict(x=x, y=y))
 
+plot = Figure(plot_width=400, plot_height=400)
+plot.line('x', 'y', source=source, line_width=3, line_alpha=0.6)
 
+callback = CustomJS(args=dict(source=source), code="""
+    var data = source.data;
+    var f = cb_obj.value
+    var x = data['x']
+    var y = data['y']
+    for (var i = 0; i < x.length; i++) {
+        y[i] = Math.pow(x[i], f)
+    }
+    source.change.emit();
+""")
 
-source = ColumnDataSource(data=dict(image=[img[0,:,:]]))
+slider = Slider(start=0.1, end=4, value=1, step=.1, title="power")
+slider.js_on_change('value', callback)
 
+layout = column(slider, plot)
 
-p_img = figure(x_range=(0,1388), y_range=(0, 1040))
-label = Label(x=1.1, y=18, text=str(frames[0]), text_font_size='70pt', text_color='#eeeeee')
-p_img.add_layout(label)
-im=p_img.image(image='image', x=0, y=0, dw=1388, dh=1040, source=source, palette="Spectral11")
-
-slider = Slider(start=frames[0], end=frames[-1], value=frames[0],step=1, title="Frame")
-
-def animate_update():
-    frame = slider.value + 1
-    if frame > frames[-1]:
-        frame = frames[0]
-    slider.value = frame
-
-ds=im.data_source    
-
-def slider_update(attr, old, new):
-
-    new_data=dict()
-    frame = slider.value
-    label.text = str(frame)
-    new_data['image']=[img[frame,:,:]]
-    ds.data= new_data
-
-
-
-slider.on_change('value', slider_update)
-
-
-def animate():
-    if button.label == '► Play':
-        button.label = '❚❚ Pause'
-        curdoc().add_periodic_callback(animate_update, 200)
-    else:
-        button.label = '► Play'
-        curdoc().remove_periodic_callback(animate_update)
-
-button = Button(label='► Play', width=60)
-button.on_click(animate)
-
-l = layout([[p_img],[slider,button],], sizing_mode='scale_width')
-curdoc().add_root(l)
-curdoc().title = "Image_sequence"
+show(layout)

@@ -1,13 +1,11 @@
+import itertools
 import numpy as np
 import random, math, copy, time, sys
-import matplotlib
-#matplotlib.use("macosx")
-import matplotlib.pyplot as plt
-import matplotlib.animation as anim
-import itertools
-from bokeh.plotting import figure 
-from bokeh.io import show
+from random import random
 from bokeh.palettes import Colorblind7
+from bokeh.models import CustomJS, ColumnDataSource, Slider
+from bokeh.plotting import figure, show
+from bokeh.layouts import column
 
 print("Program starting")
 k = 3
@@ -17,13 +15,12 @@ r = 40
 k = int(sys.argv[1])
 n = int(sys.argv[2])
 r = int(sys.argv[3])
-plt.ion()
 
-xpoints = []
-ypoints = []
-cpoints = []
-xcpoints = []
-ycpoints = []
+totalColors = []
+totalXPoints = []
+totalYPoints = []
+totalXCPoints = []
+totalYCPoints = []
 
 ########################################################################################
 # initiating the coordinates
@@ -92,12 +89,8 @@ def updateCentroids():
             sumY = sumY + point[1]
         centeroid[count] = [sumX / len(clusters[count]), sumY / len(clusters[count])]
     if oldCenteroid == centeroid:
-        print("k-means cluster is stablized")
-        time.sleep(1)
-        print("closing the program...")
-        time.sleep(1)
-        #exit()
         finishFlag = 1
+        print("hey")
 
 
 ########################################################################################
@@ -112,13 +105,6 @@ def showCentroids():
     for point in centeroid:
         print(point)
 
-########################################################################################
-# main algorith
-########################################################################################
-def update():
-    assignCoordinatesToCentroids()
-    groupingIntoClusters()
-    updateCentroids()
 
 ########################################################################################
 # drawing the clusters in ASCII
@@ -143,55 +129,26 @@ def drawASCII():
     print(" ")
 
 ########################################################################################
-# drawing the clusters in matlablib
+# main algorith
 ########################################################################################
-def drawMatlibplot():
-    global xpoints
-    global ypoints
-    global cpoints
-    global xcpoints
-    global ycpoints
+def update():
+    global clusters
+    global totalXPoints
+    global totalYPoints
+    global totalXCPoints
+    global totalYCPoints
+    global totalColors
 
-    xpoints = []
-    ypoints = []
-    cpoints = []
-    for cluster in clusters:
-        for point in cluster:
-            xpoints.append(point[0])
-            ypoints.append(point[1])
-            cpoints.append(point[2])
-    plt.scatter(xpoints, ypoints, c=cpoints)
-    plt.scatter(xcpoints, ycpoints, c="r")
-    plt.pause(1)
-    plt.draw()
-    plt.clf()
-
-    xcpoints = []
-    ycpoints = []
-    for point in centeroid:
-        xcpoints.append(point[0])
-        ycpoints.append(point[1])
-    plt.scatter(xpoints, ypoints, c=cpoints)
-    plt.scatter(xcpoints, ycpoints, c="r")
-    plt.pause(1)
-    plt.draw()
-    plt.clf()
-
-########################################################################################
-# drawing the clusters in bokeh
-########################################################################################
-def drawBokeh():
-    global xpoints
-    global ypoints
-    global cpoints
-    global xcpoints
-    global ycpoints
-
+    clusters = []
     xpoints = []
     ypoints = []
     xcpoints = []
     ycpoints = []
     colors = []
+    #if (finishFlag == 0):
+    assignCoordinatesToCentroids()
+    groupingIntoClusters()
+    updateCentroids()
 
     for cluster, color in zip(clusters, itertools.cycle(Colorblind7)):
         for point in cluster:
@@ -203,9 +160,11 @@ def drawBokeh():
         xcpoints.append(point[0])
         ycpoints.append(point[1])
 
-    p.circle(xcpoints, ycpoints, size=15, fill_color="red", line_color=None)
-    p.triangle(xpoints, ypoints, size=((100 / n) + 10), fill_color=colors, line_color=None)
-
+    totalXPoints.append(xpoints)
+    totalYPoints.append(ypoints)
+    totalXCPoints.append(xcpoints)
+    totalYCPoints.append(ycpoints)
+    totalColors.append(colors)
 
 ########################################################################################
 # main function
@@ -213,24 +172,57 @@ def drawBokeh():
 ps = []
 finishFlag = 0
 
-for count in range(r):
-    clusters = []
+for count2 in range(r):
     update()
+    #showPoints()  
+    #showCentroids()
+    
 
-    if (finishFlag == 1):
-        print("finish cycle")
-        break
+#print("size of totalXPoints[0] is " + str(len(totalXPoints[0])))
+#print("size pf totalXPoints is " + str(len(totalXPoints)))
+#print("size of totalYPoints[0] is " + str(len(totalYPoints[0])))
+#print("size of totalColors[0] is " + str(len(totalColors[0])))
+s = ColumnDataSource(data=dict(x=totalXPoints[0], y=totalYPoints[0], color=totalColors[0], xdata=totalXPoints, ydata=totalYPoints, cdata=totalColors))
+s2 = ColumnDataSource(data=dict(x=totalXCPoints[0], y=totalYCPoints[0], xdata=totalXCPoints, ydata=totalYCPoints))
+p = figure(plot_width=600, plot_height=600)
+p.circle('x', 'y', size=5 + 400/n, source=s, alpha=0.7, fill_color="color", line_color="black")
+p.triangle('x', 'y', size=10, source=s2, color="red")
 
-    p = figure(width=500, height=500, title="Frame: " + str(count))
+callback = CustomJS(args=dict(s=s), code="""
+        var data = s.data;
+        var frame = cb_obj.value - 1
+        var x = data['x']
+        var y = data['y']
+        var c = data['color']
+        var xdata = data['xdata']
+        var ydata = data['ydata']
+        var cdata = data['cdata']
+        for (var i = 0; i < x.length; i++) {
+            x[i] = xdata[frame][i]
+            y[i] = ydata[frame][i]
+            c[i] = cdata[frame][i]
+        }
+        s.change.emit();
+    """)
 
-    drawBokeh()
-    ps.append(p)
-    show(ps[count])
+callback2 = CustomJS(args=dict(s2=s2), code="""
+        var data = s2.data;
+        var frame = cb_obj.value - 1
+        var x = data['x']
+        var y = data['y']
+        var xdata = data['xdata']
+        var ydata = data['ydata']
+        for (var i = 0; i < x.length; i++) {
+            x[i] = xdata[frame][i]
+            y[i] = ydata[frame][i]
+        }
+        s2.change.emit();
+    """)
 
-        
+slider = Slider(start=1, end=r, value=1, step=1, title="Frames")
+slider.js_on_change('value', callback, callback2)
+layout = column(slider, p)
+show(layout)
 
-
-
-
-
+print("k-means cluster is stablized")
 
