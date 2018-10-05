@@ -1,6 +1,14 @@
 {% extends "Navigation.html" %}
 {% block content %}
 
+<link href="https://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.css" rel="stylesheet" type="text/css">
+<link href="https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.13.0.min.css" rel="stylesheet" type="text/css">
+<link href="https://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.css" rel="stylesheet" type="text/css">
+
+<script src="https://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.js"></script>
+<script src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.13.0.min.js"></script>
+<script src="https://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.js"></script>
+
 <div class="container-fluid">
     {% if title %}
     <h1>{{ title }}</h1>
@@ -19,7 +27,11 @@
                 <button id="myButton" class="btn btn-success" type="button" onclick="submitCluster()"><span>Submit!</span></button>
             </div>
         </div>
+
+        <div class="bk-root"></div>
     </div>
+
+    <script id="bokeh-script" type="text/javascript""></script>
 
     <script>
         var k = document.getElementById("clusters")
@@ -49,10 +61,20 @@
             var n = document.getElementById("points").value
             var r = document.getElementById("rounds").value
             var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {};
-            xhttp.open("POST", "{{ url_for('KmeansStart') }}", true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send("k=" + k + "&n=" + n + "&r=" + r);
+            xhttp.onreadystatechange = function () {
+                document.getElementsByClassName("bk-root")[0].innerHTML = "Executing code...<br>"
+                if (xhttp.readyState == 4) {
+                    var result = xhttp.responseText;
+                    var value = result.substring(26, 62)
+                    document.getElementsByClassName("bk-root")[0].setAttribute("id", value)
+                    document.getElementsByClassName("bk-root")[0].innerHTML = ""
+                    document.getElementById("bokeh-script").setAttribute("src",
+                        "{{ url_for('static', filename = 'kmeans/bokehScript.js')}}")
+                }
+            }
+            xhttp.open("POST", "{{ url_for('KmeansStart') }}", true)
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+            xhttp.send("k=" + k + "&n=" + n + "&r=" + r)
         }
     </script>
 

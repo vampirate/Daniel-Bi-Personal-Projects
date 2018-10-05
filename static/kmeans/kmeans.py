@@ -6,8 +6,9 @@ from bokeh.palettes import Colorblind7
 from bokeh.models import CustomJS, ColumnDataSource, Slider, DataSource
 from bokeh.plotting import figure, show
 from bokeh.layouts import column
+from bokeh.embed import file_html
+from bokeh.embed import components
 
-print("Program starting")
 k = 3
 n = 100
 r = 40
@@ -90,7 +91,6 @@ def updateCentroids():
         centeroid[count] = [sumX / len(clusters[count]), sumY / len(clusters[count])]
     if oldCenteroid == centeroid:
         finishFlag = 1
-        print("hey")
 
 
 ########################################################################################
@@ -185,8 +185,8 @@ sourceCentroid = ColumnDataSource(data=dict(x=totalXCPoints[0], y=totalYCPoints[
 sourceCentroidTotal = ColumnDataSource(data=dict(xdata=totalXCPoints, ydata=totalYCPoints))
 
 p = figure(plot_width=600, plot_height=600)
-p.circle('x', 'y', size=5 + 400/n, source=sourcePoint, alpha=0.7, fill_color="color", line_color="black")
-p.triangle('x', 'y', size=10, source=sourceCentroid, color="red")
+p.circle('x', 'y', size=6 + 400/n, source=sourcePoint, alpha=0.5, fill_color="color")
+p.triangle('x', 'y', size=10, source=sourceCentroid, alpha=0.7, fill_color="red")
 
 callbackPoints = CustomJS(args=dict(s=sourcePoint, sT=sourcePointTotal), code="""
         var data = s.data;
@@ -223,10 +223,20 @@ callbackCentroids = CustomJS(args=dict(s=sourceCentroid, sT=sourceCentroidTotal)
         s.change.emit();
     """)
 
-slider = Slider(start=1, end=countFrames, value=1, step=1, title="Frames")
+slider = Slider(start=1, end=r, value=1, step=1, title="Frames")
 slider.js_on_change('value', callbackCentroids, callbackPoints)
 layout = column(slider, p)
-show(layout)
+#show(layout)
 
-print("k-means cluster is stablized")
+script, div = components(layout)
+script = script[:-10]
+script = script[32:]
+print(div)
+
+f = open("static/kmeans/bokehScript.js",'w')
+print(script, file=f) # Python 3.x
+
+
+
+
 

@@ -33,9 +33,8 @@ def KmeansStart():
     k = request.form["k"]
     n = request.form["n"]
     r = request.form["r"]
-    subprocess.run(["python", "static/kmeans/kmeans.py", k, n, r])
-    print("starting")
-    return "done"
+    bokehDiv = subprocess.check_output(["python", "static/kmeans/kmeans.py", k, n, r])
+    return bokehDiv
 
 @app.route("/getimageurl", methods = ['POST'])
 def getimageurl():
