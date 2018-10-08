@@ -1,21 +1,21 @@
 import itertools
 import numpy as np
-import random, math, copy, time, sys
+import random, math, copy, sys
 from random import random
 from bokeh.palettes import Colorblind7
-from bokeh.models import CustomJS, ColumnDataSource, Slider, DataSource
+from bokeh.models import CustomJS, ColumnDataSource, Slider
 from bokeh.plotting import figure, show
 from bokeh.layouts import column
-from bokeh.embed import file_html
-from bokeh.embed import components
+from bokeh.embed import file_html, components
 
-k = 3
-n = 100
-r = 40
-
-k = int(sys.argv[1])
-n = int(sys.argv[2])
-r = int(sys.argv[3])
+if (len(sys.argv) == 4):
+    k = int(sys.argv[1])
+    n = int(sys.argv[2])
+    r = int(sys.argv[3])
+else:
+    k = 3
+    n = 100
+    r = 40
 
 totalColors = []
 totalXPoints = []
@@ -234,7 +234,7 @@ script = script[32:]
 print(div)
 
 f = open("static/kmeans/bokehScript.js",'w')
-print(script, file=f) # Python 3.x
+print(script, file=f)
 
 
 

@@ -24,10 +24,16 @@ def ImageIdentifier():
 def DogOrCat():
    return render_template("DogOrCat.html", title = "Dog or Cat?", active = "DogOrCat")
 
+@app.route("/DogOrCatStart", methods = ['POST'])
+def DogOrCatStart():
+    url = request.form['imageurl']
+    ans = subprocess.check_output(["python", "static/cnn/dogcat.py", url])
+    return ans.decode("utf-8")
+
 @app.route("/Kmeans")
 def Kmeans():
     return render_template("K-Means.html", title="K-means Clustering", active="Kmeans")
-    
+
 @app.route("/KmeansStart", methods = ['POST'])
 def KmeansStart():
     k = request.form["k"]
@@ -35,13 +41,6 @@ def KmeansStart():
     r = request.form["r"]
     bokehDiv = subprocess.check_output(["python", "static/kmeans/kmeans.py", k, n, r])
     return bokehDiv
-
-@app.route("/getimageurl", methods = ['POST'])
-def getimageurl():
-    url = request.form['imageurl']
-    ans = subprocess.check_output(["python", "static/cnn/dogcat.py", url])
-    return ans.decode("utf-8")
-    
 
 @app.after_request
 def add_header(response):

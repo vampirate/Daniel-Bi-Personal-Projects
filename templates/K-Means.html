@@ -64,10 +64,10 @@
             xhttp.onreadystatechange = function () {
                 document.getElementsByClassName("bk-root")[0].innerHTML = "Executing code...<br>"
                 if (xhttp.readyState == 4) {
-                    var result = xhttp.responseText;
-                    var value = result.substring(26, 62)
+                    var bokehDiv = xhttp.responseText;
+                    var value = bokehDiv.substring(26, 62)
                     document.getElementsByClassName("bk-root")[0].setAttribute("id", value)
-                    document.getElementsByClassName("bk-root")[0].innerHTML = ""
+                    document.getElementsByClassName("bk-root")[0].innerHTML = "Page needs to be reloaded to run the program again"
                     document.getElementById("bokeh-script").setAttribute("src",
                         "{{ url_for('static', filename = 'kmeans/bokehScript.js')}}")
                 }
