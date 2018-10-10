@@ -15,7 +15,7 @@ body {
 }
 
 /* Add a black background color to the top navigation */
-.Navigation {
+.navigation {
     z-index: 1;
     position: fixed;
     top: 0;
@@ -28,7 +28,7 @@ body {
 }
 
 /* Style the links inside the navigation bar */
-.Navigation a {
+.navigation a {
     color: #000000;
     text-align: center;
     padding: 10px;
@@ -40,14 +40,14 @@ body {
 }
 
 /* Change the color of links on hover */
-.Navigation a:hover {
+.navigation a:hover {
     background-color: #dbcece;
     color: #000000;
     opacity: 1;
 }
 
 /* Add a color to the active/current link */
-.Navigation a.active {
+.navigation a.active {
     background-color: #bcafaf;
     color: #000000;
     opacity: 1;

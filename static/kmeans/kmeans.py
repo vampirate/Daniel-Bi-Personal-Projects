@@ -13,30 +13,28 @@ if (len(sys.argv) == 4):
     n = int(sys.argv[2])
     r = int(sys.argv[3])
 else:
-    k = 3
-    n = 100
-    r = 40
-
-totalColors = []
-totalXPoints = []
-totalYPoints = []
-totalXCPoints = []
-totalYCPoints = []
+    k = 3                           ### this is the number of clusters
+    n = 100                         ### this is the number of points
+    r = 40                          ### this is the number of rounds of iteration
 
 ########################################################################################
-# initiating the coordinates
+# initiating the coordinates and centroids
 ########################################################################################
+
+# randomizing the x and y points
 np.random.seed(2)
 x = np.random.permutation(n)
 y = np.random.permutation(n)
+
+# adding the points into coordinates array
+# the coordinates stucture is [[x1, y1, -1], [x2, y2, -1]...]
+# where the 3rd element is which cluster it belongs
 coordinates = []
 clusters = []
-for count in range(n):
-    coordinates.append([x[count], y[count], 1])
+for count in range(n):              
+    coordinates.append([x[count], y[count], -1])
 
-########################################################################################
 # initiating the centroids
-########################################################################################
 xc = np.random.permutation(n)
 yc = np.random.permutation(n)
 centeroid = []
@@ -46,6 +44,7 @@ for count in range(k):
 ########################################################################################
 # initiating the functions
 ########################################################################################
+
 def getDistance(point1, point2):
     distanceX = abs(point1[0] - point2[0])
     distanceY = abs(point1[1] - point2[1])
@@ -59,15 +58,15 @@ def findClosestCenteroid(point):
     return distance.index(min(distance))
 
 ########################################################################################
-# assigning coordinates to their closest centroids
+# main functions
 ########################################################################################
-def assignCoordinatesToCentroids():
+
+# for each point in the coordinates array, assign each coordinates to their cluster
+def assignCoordinatesToCentroids(): 
     for count in range(len(coordinates)):
         coordinates[count][2] = findClosestCenteroid(coordinates[count])
 
-########################################################################################
-# grouping the pooints into clusters
-########################################################################################
+# create k amount of clusters, add each point to each cluster depending on coordinates[2]
 def groupingIntoClusters():
     for count in range(k):
         clusters.append([])
@@ -76,9 +75,7 @@ def groupingIntoClusters():
             if (coordinates[count2][2] == count):
                 clusters[count].append(coordinates[count2])
 
-########################################################################################
-# getting centroid for each cluster
-########################################################################################
+# update the centroids by getting the average point of each cluster
 def updateCentroids():
     global finishFlag
     oldCenteroid = copy.deepcopy(centeroid)
@@ -96,6 +93,7 @@ def updateCentroids():
 ########################################################################################
 # show the points
 ########################################################################################
+
 def showPoints():
     for cluster in clusters:
         for point in cluster:
@@ -109,6 +107,7 @@ def showCentroids():
 ########################################################################################
 # drawing the clusters in ASCII
 ########################################################################################
+
 def drawASCII():
     print("Iteration: " + str(count))
     printflag = 1
@@ -129,8 +128,9 @@ def drawASCII():
     print(" ")
 
 ########################################################################################
-# main algorith
+# updating the points and convert them into bokeh readable formats
 ########################################################################################
+
 def update():
     global clusters
     global totalXPoints
@@ -171,6 +171,11 @@ def update():
 # main function
 ########################################################################################
 ps = []
+totalColors = []
+totalXPoints = []
+totalYPoints = []
+totalXCPoints = []
+totalYCPoints = []
 finishFlag = 0
 
 for countFrames in range(r):
