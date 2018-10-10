@@ -14,7 +14,7 @@ if (len(sys.argv) == 4):
     r = int(sys.argv[3])
 else:
     k = 3                           ### this is the number of clusters
-    n = 100                         ### this is the number of points
+    n = 200                         ### this is the number of points
     r = 40                          ### this is the number of rounds of iteration
 
 ########################################################################################
