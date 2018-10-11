@@ -18,7 +18,7 @@ def myInfo():
 
 @app.route("/Image")
 def ImageIdentifier():
-   return render_template("Image Identifier.html", title = "Image Identifier", active = "Image")
+   return render_template("Image Identifier.html", title = "Image Identifier (Not working due to low money on Azure)", active = "Image")
 
 @app.route("/DogOrCat")
 def DogOrCat():
