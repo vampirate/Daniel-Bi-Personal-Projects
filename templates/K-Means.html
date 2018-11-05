@@ -62,17 +62,18 @@
             var r = document.getElementById("rounds").value
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
-                document.getElementsByClassName("bk-root")[0].innerHTML = "Executing code...<br>"
                 if (xhttp.readyState == 4) {
                     var bokehDiv = xhttp.responseText;
                     var value = bokehDiv.substring(26, 62)
+                    console.log("value is " + value)
                     document.getElementsByClassName("bk-root")[0].setAttribute("id", value)
                     document.getElementsByClassName("bk-root")[0].innerHTML = "Page needs to be reloaded to run the program again"
                     document.getElementById("bokeh-script").setAttribute("src",
                         "{{ url_for('static', filename = 'kmeans/bokehScript.js')}}")
+                    console.log("updated bokeh js")
                 }
             }
-            xhttp.open("POST", "{{ url_for('KmeansStart') }}", true)
+            xhttp.open("POST", "{{ url_for('KmeansStart') }}", false)
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
             xhttp.send("k=" + k + "&n=" + n + "&r=" + r)
         }

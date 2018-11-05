@@ -5,6 +5,7 @@
     {% if title %}
     <h1>{{ title }}</h1>
     {% endif %}
+
     <div class="col-sm-4">
         <div class="jumbotron">
             <input id="urlInput" name=" urlInput" type="text" maxlength="512" placeholder="Put your image URL here!" ,
@@ -13,6 +14,7 @@
             <button style="float: right" id="myButton" class="btn btn-success" type="button" onclick="submitURL()"><span>Submit!</span></button>
         </div>
     </div>
+    
     <div class="col-sm-4">
         <p id="IdentifierTags">It is a: </p>
         <img id="IdentifierImage" class="img-responsive" src="{{ url_for('static', filename = 'Images/Placeholder.png') }}"

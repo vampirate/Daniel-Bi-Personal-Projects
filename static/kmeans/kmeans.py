@@ -190,6 +190,8 @@ sourceCentroid = ColumnDataSource(data=dict(x=totalXCPoints[0], y=totalYCPoints[
 sourceCentroidTotal = ColumnDataSource(data=dict(xdata=totalXCPoints, ydata=totalYCPoints))
 
 p = figure(plot_width=600, plot_height=600)
+p.toolbar.logo = None
+p.toolbar_location = None
 p.circle('x', 'y', size=6 + 400/n, source=sourcePoint, alpha=0.5, fill_color="color")
 p.triangle('x', 'y', size=10, source=sourceCentroid, alpha=0.7, fill_color="red")
 
