@@ -24,6 +24,10 @@ def ImageIdentifier():
 def DogOrCat():
    return render_template("DogOrCat.html", title = "Dog or Cat?", active = "DogOrCat")
 
+@app.route("/WebGL")
+def WebGL():
+    return render_template("WebGL.html", title = "WebGL", active = "WebGL")
+
 @app.route("/DogOrCatStart", methods = ['POST'])
 def DogOrCatStart():
     url = request.form['imageurl']
