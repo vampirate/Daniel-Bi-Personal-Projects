@@ -1,11 +1,14 @@
 /* Step1: Prepare the canvas and get WebGL context */
 
 var canvas = document.getElementById('myCanvas');
-var gl = canvas.getContext('experimental-webgl');
+var gl = canvas.getContext('webgl');
+
+gl.clearColor(0.0, 0.0, 0, 0, 1.0);
+gl.clear(gl.COLOR_BUFFER_BIT);
 
 /* Step2: Define the geometry and store it in buffer objects */
 
-var vertices = [-0.5, 0.5, -0.5, -0.5, 0.0, -0.5, ];
+var vertices = [0, 0.5, -0.5, -0.5, 0.5, -0.5];
 
 // Create a new buffer object
 var vertex_buffer = gl.createBuffer();
@@ -36,7 +39,7 @@ gl.shaderSource(vertShader, vertCode);
 gl.compileShader(vertShader);
 
 //Fragment shader source code
-var fragCode = 'void main(void) {' + 'gl_FragColor = vec4(0.0, 0.0, 0.3, 0.1);' + '}';
+var fragCode = 'void main(void) {' + 'gl_FragColor = vec4(0.1, 0.0, 0.5, 0.3);' + '}';
 
 // Create fragment shader object
 var fragShader = gl.createShader(gl.FRAGMENT_SHADER);
@@ -79,7 +82,7 @@ gl.enableVertexAttribArray(coord);
 /* Step5: Drawing the required object (triangle) */
 
 // Clear the canvas
-gl.clearColor(0.5, 0.5, 0.5, 0.9);
+gl.clearColor(0.0, 0.0, 0.0, 0.9);
 
 // Enable the depth test
 gl.enable(gl.DEPTH_TEST);
@@ -91,5 +94,5 @@ gl.clear(gl.COLOR_BUFFER_BIT);
 gl.viewport(0, 0, canvas.width, canvas.height);
 
 // Draw the triangle
-gl.drawArrays(gl.TRIANGLES, 0, 3); <
+gl.drawArrays(gl.TRIANGLES, 0, 3);
 
