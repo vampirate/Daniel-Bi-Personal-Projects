@@ -1,8 +1,10 @@
 var canvas = document.getElementById('myCanvas');
 gl = canvas.getContext('experimental-webgl');
 
-/*========== Defining and storing the geometry ==========*/
+var scaleFactor = 0.9;
+var translateFactor = [0, 0, 0];
 
+/*========== Defining and storing the geometry ==========*/
 var vertices = [
     -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1,
     -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1,
@@ -11,7 +13,6 @@ var vertices = [
     -1, -1, -1, -1, -1, 1, 1, -1, 1, 1, -1, -1,
     -1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1,
 ];
-
 var colors = [
     5, 3, 7, 5, 3, 7, 5, 3, 7, 5, 3, 7,
     1, 1, 3, 1, 1, 3, 1, 1, 3, 1, 1, 3,
@@ -20,7 +21,6 @@ var colors = [
     1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
     0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0
 ];
-
 var indices = [
     0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7,
     8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15,
@@ -43,7 +43,6 @@ gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
 
 /*=================== SHADERS =================== */
-
 var vertCode = 'attribute vec3 position;' +
     'uniform mat4 Pmatrix;' +
     'uniform mat4 Vmatrix;' +
@@ -88,10 +87,10 @@ gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
 var _color = gl.getAttribLocation(shaderprogram, "color");
 gl.vertexAttribPointer(_color, 3, gl.FLOAT, false, 0, 0);
 gl.enableVertexAttribArray(_color);
+
 gl.useProgram(shaderprogram);
 
 /*==================== MATRIX ====================== */
-
 function get_projection(angle, a, zMin, zMax) {
     var ang = Math.tan((angle * .5) * Math.PI / 180); //angle*.5
     return [
@@ -106,10 +105,9 @@ var proj_matrix = get_projection(40, canvas.width / canvas.height, 1, 100);
 var mo_matrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 var view_matrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 
-view_matrix[14] = view_matrix[14] - 6;
+view_matrix[14] = view_matrix[14] - 4;
 
 /*================= Mouse events ======================*/
-
 var AMORTIZATION = 0.95;
 var drag = false;
 var old_x, old_y;
@@ -141,9 +139,39 @@ canvas.addEventListener("mousedown", mouseDown, false);
 canvas.addEventListener("mouseup", mouseUp, false);
 canvas.addEventListener("mouseout", mouseUp, false);
 canvas.addEventListener("mousemove", mouseMove, false);
+window.addEventListener("keydown", function (event) {
+    if (event.keyCode == 187) {
+        scaleFactor = scaleFactor + 0.1;
+        this.console.log("scale factor is " + scaleFactor)
+    }
+    if (event.keyCode == 189) {
+        scaleFactor = scaleFactor - 0.1;
+        this.console.log("scale factor is " + scaleFactor)
+    }
+    if (event.keyCode == 86) {
+        showMatrix(mo_matrix);
+    }
+    if (event.keyCode == 38) { //up
+        translateFactor = [0, 1, 0]
+        this.console.log("translateFactor factor is " + translateFactor)
+    }
+    if (event.keyCode == 40) { //down
+        translateFactor = [0, -1, 0]
+        this.console.log("translateFactor factor is " + translateFactor)
+    }
+    if (event.keyCode == 37) { //left
+        translateFactor = [-1, 0, 0]
+        this.console.log("translateFactor factor is " + translateFactor)
+    }
+    if (event.keyCode == 39) { //right
+        translateFactor = [1, 0, 0]
+        this.console.log("translateFactor factor is " + translateFactor)
+    }
+}
+)
+
 
 /*=========================rotation================*/
-
 function rotateX(m, angle) {
     var c = Math.cos(angle);
     var s = Math.sin(angle);
@@ -176,11 +204,25 @@ function rotateY(m, angle) {
     m[10] = c * m[10] - s * mv8;
 }
 
-/*=================== Drawing =================== */
+function scaleMatrix(m, scaleFactor) {
+    m[15] = m[15] / scaleFactor;
+    m[14] = m[14] / scaleFactor;
+}
 
+function translateMatrix(m, translateFactor) {
+    m[12] = m[12] + translateFactor[0];
+    m[13] = m[13] + translateFactor[1];
+    m[14] = m[14] + translateFactor[2];
+}
+
+function showMatrix(m) {
+    console.log(m)
+}
+/*=================== Drawing =================== */
 var THETA = 0,
     PHI = 0;
 var time_old = 0;
+
 
 var animate = function (time) {
     var dt = time - time_old;
@@ -191,7 +233,6 @@ var animate = function (time) {
     }
 
     //set model matrix to I4
-
     mo_matrix[0] = 1, mo_matrix[1] = 0, mo_matrix[2] = 0,
         mo_matrix[3] = 0,
 
@@ -203,9 +244,11 @@ var animate = function (time) {
 
         mo_matrix[12] = 0, mo_matrix[13] = 0, mo_matrix[14] = 0,
         mo_matrix[15] = 1;
-
+    
+    translateMatrix(mo_matrix, translateFactor);
     rotateY(mo_matrix, THETA);
     rotateX(mo_matrix, PHI);
+    scaleMatrix(mo_matrix, scaleFactor);
 
     time_old = time;
     gl.enable(gl.DEPTH_TEST);

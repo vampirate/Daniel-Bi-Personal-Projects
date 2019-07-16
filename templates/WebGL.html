@@ -10,13 +10,16 @@
         <canvas id="myCanvas" width="1000" height="700"></canvas>
     </div>
 
-    <script src="{{ url_for('static', filename = 'WebGL/WebGL.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'WebGL/WebGL2.js') }}"></script>
     
 </div>
 
 <div class="footer">
+    <p>Use mouse to drag cube to rotate it</p>
+    <p>Press + to enlarge cube</p>
+    <p>Press - to shrink cube</p>
     <p>Made by Daniel Bi</p>
-    <p>Powered by WebGL and Python</p>
+    <p>Powered by WebGL, JS and Python</p>
 </div>
 
 {% endblock %}
