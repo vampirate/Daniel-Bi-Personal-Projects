@@ -1,7 +1,7 @@
 var canvas = document.getElementById('myCanvas');
 gl = canvas.getContext('experimental-webgl');
 
-var scaleFactor = 0.9;
+var scaleFactor = 1;
 var translateFactor = [0, 0, 0];
 
 /*========== Defining and storing the geometry ==========*/
@@ -139,6 +139,7 @@ canvas.addEventListener("mousedown", mouseDown, false);
 canvas.addEventListener("mouseup", mouseUp, false);
 canvas.addEventListener("mouseout", mouseUp, false);
 canvas.addEventListener("mousemove", mouseMove, false);
+
 window.addEventListener("keydown", function (event) {
     if (event.keyCode == 187) {
         scaleFactor = scaleFactor + 0.1;
