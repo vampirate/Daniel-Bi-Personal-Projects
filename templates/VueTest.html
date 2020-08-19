@@ -1,0 +1,39 @@
+{% extends "Navigation.html" %}
+{% block content %}
+
+<div class="container-fluid">
+    {% if title %}
+    <h1>{{ title }}</h1>
+    {% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<div id="app">
+    {{ message }}
+</div>
+
+<div id="app">
+    {{ message }}
+</div>
+
+<div id="app">
+    asdadsasd
+</div>
+
+<script>
+var app = new Vue({
+el: '#app',
+data: {
+message: 'Hello Vue!'
+}
+})
+
+console.log("asd")</script>
+
+
+<div class="footer">
+    <p>Made by Daniel Bi</p>
+    <p>Powered by Microsoft Azure Computer Vision</p>
+</div>
+
+{% endblock %}

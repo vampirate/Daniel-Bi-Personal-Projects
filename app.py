@@ -28,6 +28,10 @@ def DogOrCat():
 def WebGL():
     return render_template("WebGL.html", title = "WebGL", active = "WebGL")
 
+@app.route("/VueTest")
+def VueTest():
+    return render_template("VueTest.html", title = "VueTest", active = "VueTest")
+
 @app.route("/DogOrCatStart", methods = ['POST'])
 def DogOrCatStart():
     url = request.form['imageurl']

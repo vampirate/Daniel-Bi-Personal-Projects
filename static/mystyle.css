@@ -7,8 +7,20 @@ body {
     border: 0;
 }
 
-h1, h2, img {
+h1{
     padding: 2%;
+}
+
+img {
+    width: 75%
+}
+
+h3 {
+    padding-bottom: 2%;
+}
+
+p, ul {
+    line-height: 17px;
 }
 
 
