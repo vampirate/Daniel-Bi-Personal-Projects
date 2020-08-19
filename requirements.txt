@@ -1,6 +1,6 @@
 bokeh==0.13.0
 certifi==2018.8.24
-Flask==0.12.2
+Flask==1.0
 Flask-Cors==3.0.3
 Flask-Migrate==2.2.1
 Flask-SQLAlchemy==2.3.2
